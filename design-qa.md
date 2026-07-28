@@ -1,53 +1,53 @@
-# v2.4 Design QA
+# README Presentation Design QA
 
 final result: passed
 
 ## Evidence
 
-- Source visual truth:
-  - `C:\Users\mabha\AppData\Local\Temp\codex-clipboard-4e530670-5e46-4914-8c18-113fb25bb4bf.png` (weekly plan/report, 710 × 1341 px)
-  - `C:\Users\mabha\AppData\Local\Temp\codex-clipboard-e306381a-cdb4-429f-bd0f-0fe22f824960.png` (nutrition source, 687 × 1254 px)
-- Rendered implementation:
-  - `verification-v24-final-release/weekly-verification.png` (690 × 1292 px)
-  - `verification-v24-final-release/nutrition-verification.png` (690 × 1292 px)
-  - `verification-v24-final-release/weekly-report-verification.png` (focused report export region)
-- Combined comparisons:
-  - `design-qa-weekly.png`
-  - `design-qa-nutrition.png`
-- CSS viewport: 460 × 861 px; implementation capture density: 1.5×. Source screenshots were proportionally normalized to 1292 px height for the combined comparisons. The source includes Windows chrome while implementation evidence is the app viewport; this known crop difference was excluded from fidelity judgments.
-- State: Chinese desktop UI. Weekly evidence contains one meal and one workout to exercise the new editable state; nutrition evidence shows the Protein tab.
+- Source visual truth: `C:\Users\mabha\AppData\Local\Temp\codex-clipboard-ee6b2b89-1822-48f6-98b1-fb57a20f3e10.png` (1649 × 1398 px). The source is a structural reference for a GitHub project README, not a pixel-identical product design.
+- Rendered implementation: `verification-readme-v25/github-readme.png` (1265 × 712 px), captured from `https://github.com/SteveBohanMa/calorie-compass` after commit `be51d26` was pushed.
+- Combined comparison: `verification-readme-v25/readme-design-qa.png` (1840 × 858 px).
+- Browser viewport: 1440 × 1000 CSS px. The in-app browser capture was emitted at 1265 × 712 px; both comparison panels were proportionally normalized to 880 px width without cropping.
+- State: public repository, signed-out GitHub view, `main` branch, README intro at the top of the repository article.
+
+## Full-view Comparison
+
+- The reference establishes the target hierarchy: immediate project orientation, prominent demo access, screenshots, and a scannable feature table.
+- The implementation preserves that hierarchy while replacing the source project's placeholder screenshots with a project-specific Intro image, a six-step animated Demo, and six real Calorie Compass screens.
+- The data disclaimer intentionally appears before the Demo because the project requires visitors to see the accuracy limitation before using the showcased nutrition information.
+
+## Focused-region Comparison
+
+- The README above-the-fold region was inspected at native GitHub rendering scale to verify the Intro image crop, title hierarchy, badge row, and quick navigation.
+- The Demo region was inspected separately because GIF animation cannot be judged from the static above-the-fold comparison. GitHub displayed all six frames in sequence, and the Demo anchor resolved to the correct section.
+- The screenshot grid and feature table were verified from the rendered DOM and source assets; a second visual crop was unnecessary because the images use the same 690 × 1292 source ratio and GitHub applies a consistent three-column layout.
 
 ## Findings
 
-- No actionable P0/P1/P2 findings remain.
-- Fonts and typography: hierarchy, dark-green display weight, secondary copy scale, and metric emphasis remain consistent with the v2.3 source.
-- Spacing and layout: page gutters, rounded card geometry, section rhythm, and tap-target sizing are consistent. Added week controls and edit links intentionally increase vertical density and remain scrollable without overlap.
-- Colors and tokens: mint background, white surfaces, green/blue status accents, and dark report card match the established palette.
-- Image quality and assets: the original repeated steak mismatch is removed. Online photos use per-record food/preparation queries; offline mode immediately renders semantic Google Noto food icons with contain-fit and no empty image slots.
-- Copy and content: “食物种类” beneath nutrition source is replaced by “主营养来源,” with Protein, Carbohydrate, Fat, Fiber, and Mixed tabs. Fat-loss popular items are visibly marked.
-- Interaction/accessibility: native buttons, labels, image alt text, selected tab state, seven day tabs, meal/workout editors, report export bridge, and bidirectional converter were exercised. Final Electron verification recorded zero console issues.
+- No actionable P0, P1, or P2 findings remain.
+- Fonts and typography: the Intro uses Microsoft YaHei with clear Chinese/English hierarchy; GitHub-native headings, body text, badges, and table copy remain readable and consistent.
+- Spacing and layout rhythm: the 16:9 Intro fills the README width without cropping; section separators, centered Demo, three-column screenshot grid, and feature table provide the same progressive scan pattern as the reference.
+- Colors and visual tokens: mint, forest green, white, and soft blue reuse the application's existing palette. Contrast remains sufficient across the Intro and Demo assets.
+- Image quality and asset fidelity: all visible product screens come from the real Electron application at a 460 × 861 CSS viewport and 1.5× capture density. No placeholder UI or invented product screenshot is used.
+- Copy and content: the title, product purpose, local-first behavior, feature descriptions, technical setup, data repair roadmap, privacy note, license, and nutrition-data disclaimer are present.
+- Interaction and runtime: the `查看 Demo` link uniquely resolved to `#demo`; the target heading existed; the GitHub page reported no browser console warnings or errors.
+- Accessibility: Intro, Demo, and screenshot images include descriptive alternative text; section navigation uses real anchors; tables retain text labels outside the images.
 
 ## Comparison History
 
-1. Initial P1 image/content mismatch: unrelated foods reused steak/chicken photos and nutrition grouped the wrong concept. Fixed with per-food queries, offline Noto fallbacks, five primary-nutrient tabs, and popular labels. Post-fix evidence: `design-qa-nutrition.png` and `verification-v24-final-release/food-verification.png`.
-2. Initial P1 report export crop: offscreen capture returned only the visible report header. Fixed by bringing the report card into view before capture and verifying the full seven-day card. Post-fix evidence: `verification-v24-final-release/weekly-report-verification.png`.
-3. Initial P2 offline blank images: remote requests could remain pending in restricted networks. Fixed by rendering the semantic local icon first and swapping to the online photo only after it loads. Post-fix evidence: `verification-v24-final-release/food-verification.png`.
-
-## Focused Region Comparison
-
-- The exported weekly report was inspected separately because its seven compact daily rows were too small to judge in the full-page comparison. All seven rows, totals, note, date range, and rounded clipping are visible.
-- Nutrition tabs and the first five food rows were inspected in the full-height nutrition comparison; labels and image-name alignment are readable at that scale.
+1. Initial README had only prose and a plain feature list. It did not provide an Intro visual, Demo, or screenshots. Fixed by adding a generated 16:9 Intro, a six-frame Demo GIF, six real app captures, badges, quick navigation, and a structured feature table.
+2. Initial quick links relied on emoji-derived GitHub heading slugs. Fixed by adding explicit `data-disclaimer`, `demo`, `screenshots`, `features`, and `quick-start` anchors. Post-fix evidence: the live Demo navigation resolved to `https://github.com/SteveBohanMa/calorie-compass#demo`.
+3. Final comparison found no remaining P0/P1/P2 issue. The larger project-specific Intro is an intentional improvement over the reference's badge-only opening rather than design drift.
 
 ## Implementation Checklist
 
-- [x] Preserve v2.3 visual language.
-- [x] Add editable daily meals and workouts with persisted week state.
-- [x] Show separate weekly intake and training expenditure.
-- [x] Export a complete weekly report PNG.
-- [x] Replace nutrition grouping with primary nutrient categories.
-- [x] Provide matching online images and offline semantic fallbacks.
-- [x] Verify 300 food records, popular ordering, converter behavior, and desktop console output.
+- [x] Add a project-specific Intro image built from real application screens.
+- [x] Add an animated Demo covering the six primary experiences.
+- [x] Add a labeled two-row screenshot gallery.
+- [x] Add a scannable feature table and technology badges.
+- [x] Keep the nutrition-data disclaimer prominent and unchanged in meaning.
+- [x] Verify image paths, animation frame count, GitHub rendering, anchors, and console output.
 
 ## Follow-up Polish
 
-- P3: if a fully photographic offline catalog is required later, replace selected Noto fallbacks with individually curated or generated local photos without changing the data model.
+- P3: publish a browser-hosted build later if an interactive online demo is desired; the current README intentionally presents a self-contained animated demo without claiming a hosted service exists.
