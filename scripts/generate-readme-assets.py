@@ -15,7 +15,7 @@ SCREENS = [
     ("workout-verification.png", "workout.png", "训练估算", "用训练参数估算消耗区间"),
     ("weekly-verification.png", "plan.png", "每周计划", "编辑饮食与训练并导出周报"),
     ("converter-verification.png", "converter.png", "单位换算", "kcal 与 kJ 双向换算"),
-    ("compare-verification.png", "compare.png", "热量对比", "统一按每 100 克直观比较"),
+    ("compare-verification.png", "compare.png", "热量对比", "按每 100 克或实际份量比较"),
 ]
 
 
@@ -60,7 +60,7 @@ def create_intro(images: dict[str, Image.Image]) -> None:
     draw.ellipse((-180, 650, 360, 1190), fill="#E1F4EF")
 
     draw.rounded_rectangle((118, 104, 366, 152), radius=24, fill="#D8F6E9")
-    draw.text((142, 114), "v2.5  ·  OFFLINE FIRST", font=font(20, True), fill="#127457")
+    draw.text((142, 114), "v2.8  ·  OFFLINE FIRST", font=font(20, True), fill="#127457")
     draw.text((118, 218), "燃卡快查", font=font(72, True), fill="#103F35")
     draw.text((118, 308), "Calorie Compass", font=font(40, True), fill="#238966")
     draw.text((118, 386), "离线饮食查询、训练估算与每周计划工具", font=font(28), fill="#496F66")
@@ -69,8 +69,8 @@ def create_intro(images: dict[str, Image.Image]) -> None:
     x = 118
     y = 518
     for label, fill_color in [
-        ("50 条离线食物记录", "#DDF5CF"),
-        ("训练消耗区间", "#D8F1F6"),
+        ("123 种可溯源食物", "#DDF5CF"),
+        ("53 个训练项目", "#D8F1F6"),
         ("周计划与周报", "#E0F5ED"),
         ("中英文界面", "#F6EBD8"),
     ]:

@@ -29,7 +29,27 @@ protocol.registerSchemesAsPrivileged([
 if (process.env.CALORIE_COMPASS_USER_DATA_DIR) {
   app.setPath("userData", path.resolve(process.env.CALORIE_COMPASS_USER_DATA_DIR));
 } else if (process.argv.some((value) => value.startsWith("--verify-output="))) {
+  removeOldVerifyProfiles();
   app.setPath("userData", fs.mkdtempSync(path.join(os.tmpdir(), "calorie-compass-verify-")));
+}
+
+// Throw-away profiles of earlier self-checks; only ones older than ten minutes, so a run that is still
+// shutting down is left alone. Best effort: a locked folder is simply skipped.
+function removeOldVerifyProfiles() {
+  try {
+    const cutoff = Date.now() - 10 * 60 * 1000;
+    for (const name of fs.readdirSync(os.tmpdir())) {
+      if (!name.startsWith("calorie-compass-verify-")) continue;
+      const folder = path.join(os.tmpdir(), name);
+      try {
+        if (fs.statSync(folder).mtimeMs < cutoff) fs.rmSync(folder, { recursive: true, force: true });
+      } catch {
+        // In use or already gone.
+      }
+    }
+  } catch {
+    // The temp folder could not be listed; nothing to clean.
+  }
 }
 
 const mimeTypes = {
@@ -188,9 +208,16 @@ async function createWindow() {
   Menu.setApplicationMenu(null);
   mainWindow.webContents.setWindowOpenHandler(() => ({ action: "deny" }));
   if (verifyDirectory) {
-    mainWindow.webContents.on("console-message", (_event, ...args) => {
-      const details = typeof args[0] === "object" ? args[0] : { level: args[0], message: args[1], lineNumber: args[2], sourceId: args[3] };
-      if (Number(details.level) >= 2) verificationConsoleIssues.push(details);
+    mainWindow.webContents.on("console-message", (event, ...args) => {
+      // Electron 35+ puts the details on the event, with level "debug" | "info" | "warning" | "error";
+      // older versions passed them as arguments with a numeric level (2 = warning, 3 = error).
+      const numericLevels = ["debug", "info", "warning", "error"];
+      const details = typeof event?.level === "string"
+        ? { level: event.level, message: event.message, lineNumber: event.lineNumber, sourceId: event.sourceId }
+        : typeof args[0] === "object" && args[0] !== null
+          ? { ...args[0], level: numericLevels[Number(args[0].level)] ?? String(args[0].level) }
+          : { level: numericLevels[Number(args[0])] ?? String(args[0]), message: args[1], lineNumber: args[2], sourceId: args[3] };
+      if (details.level === "warning" || details.level === "error") verificationConsoleIssues.push(details);
     });
   }
   mainWindow.webContents.on("will-navigate", (event, url) => {
@@ -249,20 +276,30 @@ async function createWindow() {
     }))()`);
     const nutritionImage = await mainWindow.webContents.capturePage();
 
-    await mainWindow.webContents.executeJavaScript(`localStorage.removeItem('calorie-compass-v2.4-planner'); location.reload()`);
+    // v2.8 workout estimator: needs a body profile; this runs in a throw-away profile directory.
+    const verifyProfile = JSON.stringify({ sex: "male", birthYear: new Date().getFullYear() - 25, heightCm: 178, weightKg: 112, activityRating: null, vo2max: null, hrMax: null, updatedAt: "" });
+    await mainWindow.webContents.executeJavaScript(`localStorage.removeItem('calorie-compass-v2.4-planner'); localStorage.setItem('calorie-compass-v2.8-profile', ${JSON.stringify(verifyProfile)}); location.reload()`);
     await delay(700);
     await mainWindow.webContents.executeJavaScript(`document.querySelector('.feature-card')?.click()`);
     await delay(450);
-    await mainWindow.webContents.executeJavaScript(`document.querySelector('.advanced-button')?.click()`);
+    await mainWindow.webContents.executeJavaScript(`document.querySelector('.wk-advanced-toggle')?.click()`);
     await delay(220);
-    await mainWindow.webContents.executeJavaScript(`document.querySelector('.primary-action')?.click()`);
-    await delay(450);
+    await mainWindow.webContents.executeJavaScript(`(() => {
+      const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+      const set = (name, value) => { const input = document.querySelector('.wk-card input[name="' + name + '"]'); if (input) { setter.call(input, value); input.dispatchEvent(new Event('input', { bubbles: true })); } };
+      set('load', '150'); set('sets', '5'); set('reps', '10'); set('rest', '120');
+    })()`);
+    await delay(350);
     const workoutMetrics = await mainWindow.webContents.executeJavaScript(`(() => ({
-      inputCount: document.querySelectorAll('.form-card input').length,
-      hasGrossResult: Boolean(document.querySelector('.workout-result-card > strong')),
-      resultFactCount: document.querySelectorAll('.workout-result-card > div > span').length,
+      inputCount: document.querySelectorAll('.wk-card input').length,
+      hasProfile: Boolean(document.querySelector('.wk-profile')),
+      headline: document.querySelector('.wk-result-label')?.textContent || '',
+      result: document.querySelector('.wk-result-value')?.textContent || '',
+      breakdownRows: document.querySelectorAll('.wk-breakdown > div').length,
     }))()`);
     const workoutImage = await mainWindow.webContents.capturePage();
+    await mainWindow.webContents.executeJavaScript(`document.querySelector('.wk-add')?.click()`);
+    await delay(250);
 
     await mainWindow.webContents.executeJavaScript(`location.reload()`);
     await delay(700);

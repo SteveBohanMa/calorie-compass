@@ -1,7 +1,7 @@
 {
   "name": "calorie-compass-desktop",
   "private": true,
-  "version": "2.7.0",
+  "version": "2.8.0",
   "type": "module",
   "main": "desktop/main.cjs",
   "scripts": {
@@ -44,10 +44,10 @@
   "build": {
     "appId": "com.caloriecompass.desktop",
     "productName": "燃卡快查",
-    "artifactName": "CalorieCompass-v2.7-portable.exe",
+    "artifactName": "CalorieCompass-v2.8-portable.exe",
     "compression": "maximum",
     "directories": {
-      "output": "release-v2.7"
+      "output": "release-v2.8"
     },
     "files": [
       "desktop/**/*",

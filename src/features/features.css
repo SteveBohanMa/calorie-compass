@@ -1,0 +1,50 @@
+/* v2.8 food features: portion calculator, use-this-data, favorites, comparison by portion. */
+
+/* Segmented control shared by the comparison mode, the profile form and workout intensity levels. */
+.segmented-control { display: flex; gap: 5px; padding: 4px; border-radius: 14px; background: var(--mint-100); }
+.segmented-control button { flex: 1 1 0; min-width: 0; min-height: 34px; padding: 0 6px; border-radius: 10px; background: transparent; color: var(--mint-800); font-size: 10px; font-weight: 800; }
+.segmented-control button.active { background: var(--mint-900); color: #fff; box-shadow: 0 6px 14px rgba(24,77,62,.18); }
+
+.portion-card { display: grid; gap: 11px; margin-top: 14px; padding: 16px; border: 1px solid var(--line); border-radius: 22px; background: rgba(255,255,255,.94); }
+.portion-heading { display: grid; gap: 3px; }
+.portion-heading strong { font-size: 13px; }
+.portion-heading small { color: var(--muted); font-size: 9px; }
+.portion-inputs { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.portion-inputs.two { grid-template-columns: 1fr 1fr; }
+.portion-inputs label { display: grid; gap: 6px; }
+.portion-inputs label span { color: var(--muted); font-size: 9px; font-weight: 750; }
+.portion-inputs input { width: 100%; min-width: 0; height: 46px; padding: 0 12px; border: 1px solid var(--line); border-radius: 13px; background: var(--mint-50); color: var(--ink); font-size: 17px; font-weight: 820; outline: none; }
+.portion-inputs input:focus { border-color: var(--mint-600); background: #fff; }
+.portion-result { display: grid; gap: 8px; padding: 13px; border-radius: 17px; background: var(--mint-900); color: #fff; }
+.portion-result > div { display: grid; grid-template-columns: auto 1fr; gap: 2px 8px; align-items: baseline; }
+.portion-result > div span { grid-column: 1 / -1; color: rgba(255,255,255,.62); font-size: 9px; font-weight: 750; }
+.portion-result > div strong { font-size: 26px; letter-spacing: -.6px; }
+.portion-result > div small { color: rgba(255,255,255,.65); font-size: 10px; }
+.portion-result ul { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.portion-result li { color: rgba(255,255,255,.75); font-size: 9px; line-height: 1.45; }
+.portion-invalid { margin: 0; color: #a84d3b; font-size: 10px; }
+.use-data-button { min-height: 46px; font-size: 12px; }
+.use-data-button:disabled { opacity: .5; }
+.meal-form { display: grid; gap: 9px; padding: 12px; border-radius: 17px; background: var(--mint-50); }
+.meal-form > span { color: var(--muted); font-size: 9px; font-weight: 750; }
+.meal-form small { color: var(--muted); font-size: 9px; }
+.meal-slots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+.meal-slots button { min-height: 36px; border: 1px solid var(--line); border-radius: 11px; background: #fff; color: var(--mint-800); font-size: 10px; font-weight: 800; }
+.meal-slots button.active { border-color: var(--mint-800); background: var(--mint-900); color: #fff; }
+.meal-form-actions { display: grid; grid-template-columns: 2fr 1fr; gap: 8px; }
+.meal-form-actions .primary-action,
+.meal-form-actions .secondary-action { min-height: 44px; font-size: 11px; }
+.meal-added { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; align-items: center; padding: 11px; border-radius: 15px; background: var(--mint-100); color: var(--mint-900); font-size: 10px; line-height: 1.45; }
+.meal-added button { min-height: 32px; padding: 0 12px; border-radius: 10px; background: var(--mint-900); color: #fff; font-size: 10px; font-weight: 800; }
+
+.favorite-button { display: grid; width: 42px; height: 42px; place-items: center; border: 1px solid var(--line); border-radius: 14px; background: #fff; color: var(--mint-800); }
+.favorite-button.active { border-color: #f2b8b8; background: #fff0f0; color: #d2445a; }
+
+.compare-mode { margin-bottom: 12px; }
+.compare-amount { display: flex; gap: 6px; align-items: center; color: var(--muted); font-size: 9px; }
+.compare-amount input { width: 64px; height: 30px; padding: 0 8px; border: 1px solid var(--line); border-radius: 9px; background: var(--mint-50); color: var(--ink); font-size: 11px; font-weight: 800; }
+.compare-row.invalid .compare-main em { color: #b44b36; }
+.compare-row.invalid .compare-amount input { border-color: #d9826d; background: #fff6f3; }
+.compare-main i.empty { background: repeating-linear-gradient(90deg, var(--mint-100) 0 6px, transparent 6px 10px); }
+
+.favorites-empty { display: grid; gap: 8px; justify-items: center; padding: 28px 18px; border: 1px dashed rgba(37,132,102,.3); border-radius: 20px; background: rgba(255,255,255,.7); color: var(--muted); font-size: 10px; line-height: 1.55; text-align: center; }

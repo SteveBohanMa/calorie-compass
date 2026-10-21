@@ -7,7 +7,7 @@ import {
   useState,
   type PropsWithChildren,
 } from "react";
-import { STORAGE_KEYS } from "./userData";
+import { STORAGE_KEYS, sanitizePlannerState } from "./userData";
 
 export type MealSlot = "breakfast" | "lunch" | "dinner" | "snack";
 
@@ -20,21 +20,46 @@ export type MealEntry = {
   grams: number;
   kcalPer100G: number;
   kcal: number;
+  /** Oden items (v2.8): grams per piece the user chose when adding it; the editor counts pieces with it. */
+  pieceGrams?: number;
   completed: boolean;
 };
 
+/**
+ * One planned exercise (workout model v2, Calorie Compass v2.8). Inputs are stored so the estimate can be
+ * recomputed; burn* is the counted extra energy (above resting metabolism), total* adds resting metabolism
+ * when the session length is known. Entries with a higher modelVersion come from a newer app: only id,
+ * names, burn*, completed and modelVersion are guaranteed, and they are shown read-only.
+ */
 export type WorkoutEntry = {
   id: string;
   exerciseId: string;
   nameZh: string;
   nameEn: string;
+  /** Body weight used for this entry (kg). */
   bodyWeight: number;
   sets: number;
   reps: number;
   loadKg: number;
+  restSec: number | null;
+  secPerRep: number | null;
+  holdSeconds: number | null;
+  minutes: number | null;
+  speedKmh: number | null;
+  gradePct: number | null;
+  watts: number | null;
+  level: string | null;
+  rpe: number | null;
+  avgHr: number | null;
+  /** Session minutes when known, otherwise time under load. */
   durationMinutes: number;
   burnLow: number;
+  burnMid: number;
   burnHigh: number;
+  totalLow: number | null;
+  totalHigh: number | null;
+  headline: "total" | "training";
+  modelVersion: number;
   completed: boolean;
 };
 
@@ -104,9 +129,8 @@ function loadState(): PlannerState {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return { version: 1, weeks: {} };
-    const parsed = JSON.parse(raw) as PlannerState;
-    if (parsed.version !== 1 || !parsed.weeks) return { version: 1, weeks: {} };
-    return parsed;
+    // Cleaning drops workout entries made before the v2.8 workout model and keeps fields from newer versions.
+    return sanitizePlannerState(JSON.parse(raw))?.state ?? { version: 1, weeks: {} };
   } catch {
     return { version: 1, weeks: {} };
   }
@@ -158,7 +182,7 @@ export function summarizeWeek(week: WeekPlan) {
   const days = week.days.map((day) => ({
     ...day,
     intake: Math.round(day.meals.reduce((total, item) => total + item.kcal, 0)),
-    burn: Math.round(day.workouts.reduce((total, item) => total + (item.burnLow + item.burnHigh) / 2, 0)),
+    burn: Math.round(day.workouts.reduce((total, item) => total + item.burnMid, 0)),
   }));
   const mealItems = days.flatMap((day) => day.meals);
   const workoutItems = days.flatMap((day) => day.workouts);
