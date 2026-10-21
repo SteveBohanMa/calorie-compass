@@ -30,7 +30,8 @@ for (const food of foods) {
 const methodIcons = {
   pan: "shallow-pan-of-food", deep: "fried-shrimp", stir: "shallow-pan-of-food", steam: "steaming-bowl",
   boil: "pot-of-food", roast: "cooking", braise: "pot-of-food", simmer: "pot-of-food",
-  blanch: "steaming-bowl", raw: "green-salad", soup: "steaming-bowl", microwave: "bowl-with-spoon",
+  blanch: "steaming-bowl", raw: "green-salad", oden: "steaming-bowl", microwave: "bowl-with-spoon",
+  cold: "green-salad",
 };
 
 const selectedNames = new Set([...Object.values(foodIcons), ...Object.values(methodIcons)]);

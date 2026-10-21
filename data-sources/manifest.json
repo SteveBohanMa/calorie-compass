@@ -1,0 +1,41 @@
+{
+  "note": "Raw nutrition source files. The files themselves are git-ignored; this manifest is committed.",
+  "sources": {
+    "usda-sr-legacy": {
+      "title": "USDA FoodData Central - SR Legacy (April 2018), CSV",
+      "url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "file": "data-sources/raw/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "license": "Public domain (CC0 1.0)",
+      "bytes": 6074592,
+      "sha256": "b80817294b8850530aaedf2e515c02593b1824f763a0ff356e5c2081643e6fd0",
+      "downloadedAt": "2026-10-16T20:51:52.108Z"
+    },
+    "usda-foundation": {
+      "title": "USDA FoodData Central - Foundation Foods (2026-04-30), CSV",
+      "url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_foundation_food_csv_2026-04-30.zip",
+      "file": "data-sources/raw/FoodData_Central_foundation_food_csv_2026-04-30.zip",
+      "license": "Public domain (CC0 1.0)",
+      "bytes": 3825741,
+      "sha256": "70457ee9d9342f43bda2010318c85f04210c689fdeb9cd2da4c513b0e8dbc655",
+      "downloadedAt": "2026-10-16T20:52:13.139Z"
+    },
+    "mext-2023-ch2": {
+      "title": "日本食品標準成分表（八訂）増補2023年 第2章（データ）",
+      "url": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx",
+      "file": "data-sources/raw/mext_standard_tables_2023_ch2.xlsx",
+      "license": "文部科学省：食品成分データは自由に利用可。出典「日本食品標準成分表（八訂）増補2023年から引用」",
+      "bytes": 1973402,
+      "sha256": "0d5a77077dd6cd91cbc2e6e317b8b218a38728c409eed452f1c10635a0d3099c",
+      "downloadedAt": "2026-10-16T20:52:26.567Z"
+    },
+    "mext-2023-errata": {
+      "title": "日本食品標準成分表（八訂）増補2023年 正誤表（データ）",
+      "url": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_16.xlsx",
+      "file": "data-sources/raw/mext_standard_tables_2023_errata.xlsx",
+      "license": "同上 / same as above",
+      "bytes": 68693,
+      "sha256": "fb61037c7f66af0db1fb0729977913a629bc17097bc3ff7bf75217f9110acabb",
+      "downloadedAt": "2026-10-16T20:52:27.870Z"
+    }
+  }
+}

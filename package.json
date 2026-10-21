@@ -1,7 +1,7 @@
 {
   "name": "calorie-compass-desktop",
   "private": true,
-  "version": "2.5.0",
+  "version": "2.7.0",
   "type": "module",
   "main": "desktop/main.cjs",
   "scripts": {
@@ -9,12 +9,14 @@
     "build:food-icons": "node scripts/build-food-icon-fallbacks.mjs",
     "update:runtime-lock": "node scripts/update-mobile-runtime-lock.mjs",
     "test:runtime": "playwright test",
+    "test:desktop": "npm run build && playwright test -c playwright.desktop.config.ts",
     "test:sites": "node --test tests/sites-worker.test.mjs",
-    "test:v25-data": "node scripts/validate-v24-data.mjs",
+    "test:data": "node scripts/validate-v24-data.mjs",
+    "test": "npm run check:runtime && npm run test:data && npm run test:sites && npm run test:runtime",
     "predev": "npm run check:runtime",
     "dev": "vite",
     "prebuild": "npm run check:runtime && npm run build:food-icons",
-    "build": "tsc && vite build && node scripts/prepare-sites-build.mjs",
+    "build": "tsc && vite build && node scripts/prune-unused-assets.mjs && node scripts/prepare-sites-build.mjs",
     "desktop:run": "npm run build && electron .",
     "desktop:dist": "npm run build && electron-builder --win portable --x64"
   },
@@ -42,10 +44,10 @@
   "build": {
     "appId": "com.caloriecompass.desktop",
     "productName": "燃卡快查",
-    "artifactName": "CalorieCompass-v2.5-portable.exe",
+    "artifactName": "CalorieCompass-v2.7-portable.exe",
     "compression": "maximum",
     "directories": {
-      "output": "release-v2.5"
+      "output": "release-v2.7"
     },
     "files": [
       "desktop/**/*",

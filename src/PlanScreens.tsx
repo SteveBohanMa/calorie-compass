@@ -45,6 +45,10 @@ function formatWeekRange(weekStart: string, lang: Lang) {
   return `${start.toLocaleDateString(locale, { month: "short", day: "numeric" })} – ${end.toLocaleDateString(locale, { month: "short", day: "numeric" })}`;
 }
 
+function nonNegative(value: string) {
+  return Math.max(0, Number(value) || 0);
+}
+
 function progress(done: number, total: number) {
   return total ? Math.round(done / total * 100) : 0;
 }
@@ -175,6 +179,8 @@ export function MealEditorScreen({ lang, weekStart, date }: { lang: Lang; weekSt
 }
 
 function MealEditorCard({ lang, item, patchMeal, removeMeal }: { lang: Lang; item: MealEntry; patchMeal: (id: string, patch: Partial<MealEntry>) => void; removeMeal: (id: string) => void }) {
+  // Entries saved before v2.6 may point at foods that are hidden now; keep them visible and editable.
+  const isRetired = !FOODS.some((food) => food.id === item.foodId);
   const selectFood = (foodId: string) => {
     const food = FOODS.find((candidate) => candidate.id === foodId) ?? FOODS[0];
     const kcal = Math.round(food.kcal * item.grams) / 100;
@@ -187,7 +193,7 @@ function MealEditorCard({ lang, item, patchMeal, removeMeal }: { lang: Lang; ite
   return <section className="editor-card">
     <div className="editor-card-top"><label className="check-control"><input type="checkbox" checked={item.completed} onChange={(event) => patchMeal(item.id, { completed: event.target.checked })} /><span><CheckIcon /></span>{lang === "zh" ? "已完成" : "Done"}</label><button className="delete-button" onClick={() => removeMeal(item.id)} aria-label={lang === "zh" ? "删除食物" : "Delete food"}><TrashIcon /></button></div>
     <label><span>{lang === "zh" ? "餐次" : "Meal"}</span><select value={item.slot} onChange={(event) => patchMeal(item.id, { slot: event.target.value as MealSlot })}>{MEAL_SLOTS.map((slot) => <option key={slot.id} value={slot.id}>{localizedLabel(slot, lang)}</option>)}</select></label>
-    <label><span>{lang === "zh" ? "食物" : "Food"}</span><select value={item.foodId} onChange={(event) => selectFood(event.target.value)}>{FOODS.map((food) => <option key={food.id} value={food.id}>{localizedLabel(food, lang)} · {food.kcal} kcal/100g</option>)}</select></label>
+    <label><span>{lang === "zh" ? "食物" : "Food"}</span><select value={item.foodId} onChange={(event) => selectFood(event.target.value)}>{isRetired ? <option value={item.foodId} disabled>{localizedLabel({ zh: item.nameZh, en: item.nameEn }, lang)}（{lang === "zh" ? "已下架，请重新选择" : "no longer listed, please choose again"}）</option> : null}{FOODS.map((food) => <option key={food.id} value={food.id}>{localizedLabel(food, lang)} · {food.kcal} kcal/100g</option>)}</select></label>
     <div className="editor-grid"><label><span>{lang === "zh" ? "重量（克）" : "Weight (g)"}</span><input type="number" min="1" value={item.grams} onChange={(event) => changeGrams(Number(event.target.value))} /></label><div className="editor-total"><span>{lang === "zh" ? "本项热量" : "Calories"}</span><strong>{Math.round(item.kcal)}</strong><small>kcal</small></div></div>
   </section>;
 }
@@ -214,7 +220,7 @@ export function WorkoutEditorScreen({ lang, weekStart, date }: { lang: Lang; wee
       {day.workouts.map((item) => <section className="editor-card" key={item.id}>
         <div className="editor-card-top"><label className="check-control"><input type="checkbox" checked={item.completed} onChange={(event) => patchWorkout(item.id, { completed: event.target.checked })} /><span><CheckIcon /></span>{lang === "zh" ? "已完成" : "Done"}</label><button className="delete-button" onClick={() => removeWorkout(item.id)}><TrashIcon /></button></div>
         <label><span>{lang === "zh" ? "训练动作" : "Exercise"}</span><select value={item.exerciseId} onChange={(event) => patchWorkout(item.id, { exerciseId: event.target.value })}>{EXERCISES.map((exercise) => <option key={exercise.id} value={exercise.id}>{localizedLabel(exercise, lang)}</option>)}</select></label>
-        <div className="editor-grid workout-editor-grid"><label><span>{lang === "zh" ? "体重 kg" : "Body kg"}</span><input type="number" value={item.bodyWeight} onChange={(event) => patchWorkout(item.id, { bodyWeight: Number(event.target.value) })} /></label><label><span>{lang === "zh" ? "负重 kg" : "Load kg"}</span><input type="number" value={item.loadKg} onChange={(event) => patchWorkout(item.id, { loadKg: Number(event.target.value) })} /></label><label><span>{lang === "zh" ? "组数" : "Sets"}</span><input type="number" value={item.sets} onChange={(event) => patchWorkout(item.id, { sets: Number(event.target.value) })} /></label><label><span>{lang === "zh" ? "每组次数" : "Reps"}</span><input type="number" value={item.reps} onChange={(event) => patchWorkout(item.id, { reps: Number(event.target.value) })} /></label><label><span>{lang === "zh" ? "时长（分钟，可选）" : "Minutes (optional)"}</span><input type="number" value={item.durationMinutes || ""} placeholder={lang === "zh" ? "自动推算" : "Auto"} onChange={(event) => patchWorkout(item.id, { durationMinutes: Number(event.target.value) })} /></label><div className="editor-total"><span>{lang === "zh" ? "预计消耗" : "Estimated burn"}</span><strong>{item.burnLow}–{item.burnHigh}</strong><small>kcal</small></div></div>
+        <div className="editor-grid workout-editor-grid"><label><span>{lang === "zh" ? "体重 kg" : "Body kg"}</span><input type="number" min="0" value={item.bodyWeight} onChange={(event) => patchWorkout(item.id, { bodyWeight: nonNegative(event.target.value) })} /></label><label><span>{lang === "zh" ? "负重 kg" : "Load kg"}</span><input type="number" min="0" value={item.loadKg} onChange={(event) => patchWorkout(item.id, { loadKg: nonNegative(event.target.value) })} /></label><label><span>{lang === "zh" ? "组数" : "Sets"}</span><input type="number" min="0" value={item.sets} onChange={(event) => patchWorkout(item.id, { sets: nonNegative(event.target.value) })} /></label><label><span>{lang === "zh" ? "每组次数" : "Reps"}</span><input type="number" min="0" value={item.reps} onChange={(event) => patchWorkout(item.id, { reps: nonNegative(event.target.value) })} /></label><label><span>{lang === "zh" ? "时长（分钟，可选）" : "Minutes (optional)"}</span><input type="number" min="0" value={item.durationMinutes || ""} placeholder={lang === "zh" ? "自动推算" : "Auto"} onChange={(event) => patchWorkout(item.id, { durationMinutes: nonNegative(event.target.value) })} /></label><div className="editor-total"><span>{lang === "zh" ? "预计消耗" : "Estimated burn"}</span><strong>{item.burnLow}–{item.burnHigh}</strong><small>kcal</small></div></div>
       </section>)}
       {!day.workouts.length ? <div className="editor-empty">{lang === "zh" ? "还没有训练动作，点击下方按钮开始添加。" : "No workouts yet. Add the first one below."}</div> : null}
     </div>

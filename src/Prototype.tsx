@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState, type ComponentProps, type ComponentType, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type ChangeEvent, type ComponentProps, type ComponentType, type FormEvent } from "react";
 import {
+  ArchiveIcon,
   ArrowLeftIcon,
   BarChartIcon,
   BookmarkIcon,
@@ -8,10 +9,12 @@ import {
   ChevronRightIcon,
   Cross2Icon,
   DashboardIcon,
+  DownloadIcon,
   GearIcon,
   GlobeIcon,
   HeartIcon,
   HomeIcon,
+  InfoCircledIcon,
   LightningBoltIcon,
   MagnifyingGlassIcon,
   MixerHorizontalIcon,
@@ -21,6 +24,7 @@ import {
   ReaderIcon,
   StopwatchIcon,
   TrashIcon,
+  UploadIcon,
 } from "@radix-ui/react-icons";
 import {
   Carousel,
@@ -33,14 +37,29 @@ import {
   EXERCISES,
   FOODS,
   estimateWorkout,
+  hasVerifiedNutrients,
   type Food,
   type Lang,
   type PrimaryNutrient,
   type WorkoutResult,
 } from "./catalog";
 import { MealEditorScreen, PlanScreen, WorkoutEditorScreen } from "./PlanScreens";
-import { PlannerProvider } from "./planner";
+import { PlannerProvider, startOfWeekKey, summarizeWeek, usePlanner } from "./planner";
 import { methodFallbackImage } from "./foodIcon";
+import {
+  CUSTOM_FOOD_IMAGE,
+  MAX_BACKUP_BYTES,
+  STORAGE_KEYS,
+  applyBackup,
+  backupFileName,
+  createBackupWithReport,
+  parseBackup,
+  serializeBackup,
+  type BackupError,
+  type BackupFile,
+  type BackupSummary,
+  type CustomFood,
+} from "./userData";
 
 type IconType = ComponentType<{ width?: number; height?: number }>;
 
@@ -50,19 +69,6 @@ type Method = {
   en: string;
   image: string;
   tone: "mint" | "lime" | "peach" | "sky";
-};
-
-type CustomFood = {
-  id: string;
-  nameZh: string;
-  nameEn: string;
-  kcalPer100G: number;
-  servingWeightG: number;
-  proteinPer100G: number;
-  carbohydratePer100G: number;
-  fatPer100G: number;
-  fiberPer100G: number;
-  image: string;
 };
 
 type CompareFood = {
@@ -75,9 +81,8 @@ type CompareFood = {
   custom?: boolean;
 };
 
-const CUSTOM_FOODS_KEY = "calorie-compass-v2.5-custom-foods";
-const COMPARE_FOODS_KEY = "calorie-compass-v2.5-compare-foods";
-const CUSTOM_FOOD_IMAGE = "/assets/food/custom-dish.png";
+const CUSTOM_FOODS_KEY = STORAGE_KEYS.customFoods;
+const COMPARE_FOODS_KEY = STORAGE_KEYS.compareFoods;
 
 function readStoredList<T>(key: string): T[] {
   try {
@@ -170,6 +175,12 @@ const COPY = {
     serving: "常见一份",
     dataGrade: "数据说明",
     estimate: "通用估算值",
+    note: "说明",
+    gradeA: "来源实测值",
+    gradeB: "估算（相近做法或配方）",
+    gradeC: "典型值，以包装为准",
+    saltBraise: "卤汁、炖汤含盐较高，汤汁尽量少吃。",
+    saltOden: "关东煮汤底含盐较高，汤尽量少喝。",
     addCompare: "加入热量对比",
     usedData: "使用此数据",
     detail: "热量详情",
@@ -238,6 +249,12 @@ const COPY = {
     serving: "Typical serving",
     dataGrade: "Data note",
     estimate: "General estimate",
+    note: "Note",
+    gradeA: "Measured in the source",
+    gradeB: "Estimate (similar method or recipe)",
+    gradeC: "Typical value; check the package label",
+    saltBraise: "Braising liquids are salty; go easy on the sauce.",
+    saltOden: "Oden broth is salty; skip most of the soup.",
     addCompare: "Add to comparison",
     usedData: "Use this data",
     detail: "Calorie details",
@@ -276,6 +293,8 @@ const COPY = {
   },
 } as const;
 
+// Every cooking method the catalog can use. Methods with no foods yet are hidden from the
+// lookup grid automatically (see VISIBLE_METHODS) and appear once data is added.
 const METHODS: Method[] = [
   { id: "pan", zh: "煎", en: "Pan-sear", image: "/assets/food/method-pan.jpg", tone: "mint" },
   { id: "deep", zh: "炸", en: "Deep-fry", image: "/assets/food/method-deep.jpg", tone: "peach" },
@@ -283,13 +302,16 @@ const METHODS: Method[] = [
   { id: "steam", zh: "蒸", en: "Steam", image: "/assets/food/method-steam.jpg", tone: "sky" },
   { id: "boil", zh: "煮", en: "Boil", image: "/assets/food/method-boil.jpg", tone: "mint" },
   { id: "roast", zh: "烤", en: "Roast", image: "/assets/food/method-roast.jpg", tone: "peach" },
-  { id: "braise", zh: "炖", en: "Braise", image: "/assets/food/method-braise.jpg", tone: "lime" },
+  { id: "braise", zh: "卤·炖", en: "Braise", image: "/assets/food/method-braise.jpg", tone: "lime" },
   { id: "simmer", zh: "焖", en: "Simmer", image: "/assets/food/method-simmer.jpg", tone: "sky" },
-  { id: "blanch", zh: "白灼", en: "Blanch", image: "/assets/food/method-blanch.jpg", tone: "mint" },
-  { id: "raw", zh: "生食", en: "Raw", image: "/assets/food/method-raw.jpg", tone: "lime" },
-  { id: "soup", zh: "汤煮", en: "Soup", image: "/assets/food/method-soup.jpg", tone: "sky" },
+  { id: "blanch", zh: "白灼", en: "Blanch", image: "/assets/food/method-blanch.jpg", tone: "sky" },
+  { id: "raw", zh: "生食·原味", en: "Raw & plain", image: "/assets/food/method-raw.jpg", tone: "mint" },
+  { id: "oden", zh: "关东煮", en: "Oden", image: "/assets/food/catalog/f034.jpg", tone: "peach" },
   { id: "microwave", zh: "微波", en: "Microwave", image: "/assets/food/method-microwave.jpg", tone: "peach" },
+  { id: "cold", zh: "凉拌·沙拉", en: "Cold & salad", image: "/assets/food/catalog/f022.jpg", tone: "lime" },
 ];
+
+const METHOD_BY_ID: Record<string, Method> = Object.fromEntries(METHODS.map((method) => [method.id, method]));
 
 function label<T extends { zh: string; en: string }>(item: T, lang: Lang) {
   return lang === "zh" ? item.zh : item.en;
@@ -301,9 +323,9 @@ function localizedSlash(value: string, lang: Lang) {
 }
 
 const METHOD_PREPARATIONS: Record<string, string[]> = {
-  pan: ["煎"], deep: ["炸"], stir: ["清炒"], steam: ["蒸"], boil: ["水煮"],
-  roast: ["烤", "烘焙"], braise: ["卤"], simmer: ["焖"], blanch: ["白灼"],
-  raw: ["生食", "原味"], soup: ["关东煮"], microwave: ["微波"],
+  pan: ["煎"], deep: ["炸", "油炸"], stir: ["清炒", "炒", "爆炒"], steam: ["蒸"], boil: ["水煮", "汤煮"],
+  roast: ["烤", "烘焙"], braise: ["卤", "炖", "红烧"], simmer: ["焖"], blanch: ["白灼"],
+  raw: ["生食", "原味"], oden: ["关东煮"], microwave: ["微波"], cold: ["凉拌", "沙拉"],
 };
 
 function foodsForMethod(method: Method) {
@@ -311,17 +333,19 @@ function foodsForMethod(method: Method) {
   return FOODS.filter((food) => preparations.includes(food.preparationZh));
 }
 
+const VISIBLE_METHODS = METHODS.filter((method) => foodsForMethod(method).length > 0);
+
 function DesktopInput(props: ComponentProps<"input">) {
   return <input {...props} />;
 }
 
 export default function Prototype() {
   const [lang, setLang] = useState<Lang>(() =>
-    window.localStorage.getItem("calorie-compass-language") === "en" ? "en" : "zh",
+    window.localStorage.getItem(STORAGE_KEYS.language) === "en" ? "en" : "zh",
   );
 
   const updateLanguage = (next: Lang) => {
-    window.localStorage.setItem("calorie-compass-language", next);
+    window.localStorage.setItem(STORAGE_KEYS.language, next);
     setLang(next);
   };
 
@@ -379,7 +403,7 @@ function makeLookupScreen(lang: Lang): FlowScreen {
 
 function makeQuickFoodListScreen(lang: Lang, kind: "convenience" | "nutrition"): FlowScreen {
   const text = COPY[lang];
-  const method = kind === "convenience" ? METHODS[5] : METHODS[3];
+  const method = kind === "convenience" ? METHOD_BY_ID.roast : METHOD_BY_ID.steam;
   const contextTitle = kind === "convenience" ? text.convenience : text.nutrition;
   return {
     id: `quick-${kind}`,
@@ -412,7 +436,7 @@ function makeSearchFoodListScreen(lang: Lang, query: string): FlowScreen {
   const text = COPY[lang];
   const normalized = query.trim().toLowerCase();
   const foods = FOODS.filter((food) => `${food.zh} ${food.en} ${food.aliases}`.toLowerCase().includes(normalized));
-  const method = METHODS[0];
+  const method = METHOD_BY_ID.pan;
   return {
     id: `search-${normalized}`,
     headerHeight: 62,
@@ -546,6 +570,12 @@ function HomeScreen({
   onPlan: () => void;
 }) {
   const text = COPY[lang];
+  const { getWeek } = usePlanner();
+  const weekSummary = summarizeWeek(getWeek(startOfWeekKey()));
+  const weekItems = weekSummary.mealTotal + weekSummary.workoutTotal;
+  const weekDone = weekSummary.mealCompleted + weekSummary.workoutCompleted;
+  const planValue = weekItems ? `${Math.round(weekDone / weekItems * 100)}%` : (lang === "zh" ? "未安排" : "Not set");
+  const reportValue = weekItems ? (lang === "zh" ? `${weekItems} 项记录` : `${weekItems} entries`) : (lang === "zh" ? "暂无记录" : "No entries");
   return (
     <MobileScroll className="app-screen mint-screen">
       <main className="home-content screen-pad-bottom">
@@ -610,8 +640,8 @@ function HomeScreen({
             <ChevronRightIcon width={18} height={18} />
           </div>
           <div className="weekly-split">
-            <span><CalendarIcon width={16} height={16} /><small>{text.plan}</small><b>68%</b></span>
-            <span><ReaderIcon width={16} height={16} /><small>{text.report}</small><b>{text.recorded}</b></span>
+            <span><CalendarIcon width={16} height={16} /><small>{text.plan}</small><b>{planValue}</b></span>
+            <span><ReaderIcon width={16} height={16} /><small>{text.report}</small><b>{reportValue}</b></span>
           </div>
         </button>
       </main>
@@ -681,7 +711,7 @@ function LookupScreen({
         <section className="section-block">
           <SectionTitle title={text.methods} subtitle={text.methodsSub} />
           <div className="method-grid">
-            {METHODS.map((method) => (
+            {VISIBLE_METHODS.map((method) => (
               <button className={`method-bubble ${method.tone}`} key={method.id} onClick={() => onMethod(method)}>
                 <ResilientImage src={method.image} fallback={methodFallbackImage(method.id)} alt={label(method, lang)} draggable={false} />
                 <span>{label(method, lang)}</span>
@@ -721,6 +751,10 @@ function FoodListScreen({
             <small>{contextTitle ? text.allResults : text.popular}</small>
           </div>
         </div>
+
+        {!contextTitle && (method.id === "braise" || method.id === "oden") ? (
+          <p className="salt-tip" role="note">{method.id === "oden" ? text.saltOden : text.saltBraise}</p>
+        ) : null}
 
         <SectionTitle title={text.results} subtitle={text.popular} />
         <div className="food-list">
@@ -785,6 +819,12 @@ function NutritionSourceScreen({ lang, onFood }: { lang: Lang; onFood: (food: Fo
   );
 }
 
+function gradeLabel(grade: string, lang: Lang) {
+  const text = COPY[lang];
+  const meaning = grade === "A" ? text.gradeA : grade === "B" ? text.gradeB : grade === "C" ? text.gradeC : text.estimate;
+  return `${grade} · ${meaning}`;
+}
+
 function FoodDetailScreen({
   lang,
   method,
@@ -819,13 +859,19 @@ function FoodDetailScreen({
         </section>
 
         <section className="macro-card">
-          <div><span>{lang === "zh" ? "蛋白质" : "Protein"}</span><b>{food.protein} g / 100 g</b></div>
-          <div><span>{lang === "zh" ? "碳水化合物" : "Carbohydrate"}</span><b>{food.carbohydrate} g / 100 g</b></div>
-          <div><span>{lang === "zh" ? "脂肪" : "Fat"}</span><b>{food.fat} g / 100 g</b></div>
-          <div><span>{lang === "zh" ? "膳食纤维" : "Fiber"}</span><b>{food.fiber} g / 100 g</b></div>
+          {hasVerifiedNutrients(food) ? <>
+            <div><span>{lang === "zh" ? "蛋白质" : "Protein"}</span><b>{food.protein} g / 100 g</b></div>
+            <div><span>{lang === "zh" ? "碳水化合物" : "Carbohydrate"}</span><b>{food.carbohydrate} g / 100 g</b></div>
+            <div><span>{lang === "zh" ? "脂肪" : "Fat"}</span><b>{food.fat} g / 100 g</b></div>
+            <div><span>{lang === "zh" ? "膳食纤维" : "Fiber"}</span><b>{food.fiber} g / 100 g</b></div>
+          </> : <div className="macro-pending">
+            <span>{lang === "zh" ? "蛋白质 · 碳水 · 脂肪 · 纤维" : "Protein · carbs · fat · fiber"}</span>
+            <b>{lang === "zh" ? "正在核对，暂不显示" : "Being verified, hidden for now"}</b>
+          </div>}
           <div><span>{lang === "zh" ? "品牌/门店" : "Brand/store"}</span><b>{localizedSlash(food.brand, lang)}</b></div>
           <div><span>{lang === "zh" ? "千焦" : "Kilojoules"}</span><b>{Math.round(kcal * 4.184)} kJ</b></div>
-          <div><span>{text.dataGrade}</span><b>{food.grade} · {food.includesBroth ? (lang === "zh" ? "含汤" : "broth included") : food.includesSauce ? (lang === "zh" ? "含酱" : "sauce included") : text.estimate}</b></div>
+          <div><span>{text.dataGrade}</span><b>{gradeLabel(food.grade, lang)}{food.includesBroth ? (lang === "zh" ? " · 含汤" : " · broth included") : food.includesSauce ? (lang === "zh" ? " · 含酱" : " · sauce included") : ""}</b></div>
+          {food.noteZh ? <div><span>{text.note}</span><b className="food-note">{lang === "zh" ? food.noteZh : food.noteEn}</b></div> : null}
           <div><span>{text.source}</span><b>{lang === "zh" ? food.sourceZh : food.sourceEn}</b></div>
         </section>
 
@@ -840,17 +886,19 @@ function FoodDetailScreen({
 
 function CompareScreen({ lang, selectedFoodId }: { lang: Lang; selectedFoodId?: string }) {
   const text = COPY[lang];
+  const allFoods = useMemo<CompareFood[]>(() => [
+    ...FOODS.map(catalogToCompareFood),
+    ...readCustomFoods().map(customToCompareFood),
+  ], []);
   const [selectedIds, setSelectedIds] = useState<string[]>(() => {
-    const stored = readStoredList<string>(COMPARE_FOODS_KEY).filter((id) => typeof id === "string");
+    // Ignore saved ids that no longer exist (e.g. foods hidden in v2.6) so the defaults still appear.
+    const known = new Set(allFoods.map((food) => food.id));
+    const stored = readStoredList<string>(COMPARE_FOODS_KEY).filter((id) => typeof id === "string" && known.has(id));
     const initial = stored.length ? stored : [FOODS[0].id, FOODS[1].id];
     return selectedFoodId && !initial.includes(selectedFoodId) ? [...initial, selectedFoodId] : initial;
   });
   const [pickerOpen, setPickerOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const allFoods = useMemo<CompareFood[]>(() => [
-    ...FOODS.map(catalogToCompareFood),
-    ...readCustomFoods().map(customToCompareFood),
-  ], []);
   const items = selectedIds.map((id) => allFoods.find((food) => food.id === id)).filter((food): food is CompareFood => Boolean(food));
   const max = Math.max(1, ...items.map((item) => item.kcal));
   const normalized = query.trim().toLowerCase();
@@ -909,8 +957,41 @@ function CompareScreen({ lang, selectedFoodId }: { lang: Lang; selectedFoodId?: 
   );
 }
 
+const BACKUP_ERROR_TEXT: Record<Lang, Record<BackupError | "too-large", string>> = {
+  zh: {
+    "invalid-json": "无法读取：这个文件不是有效的备份文件。",
+    "not-a-backup": "这不是燃卡快查导出的备份文件。",
+    "unsupported-version": "这个备份来自更新版本的燃卡快查，请先升级软件再导入。",
+    "invalid-data": "备份内容不完整或已损坏，没有导入任何数据。",
+    "too-large": "文件超过 5 MB，不是有效的备份文件。",
+  },
+  en: {
+    "invalid-json": "This file could not be read as a backup.",
+    "not-a-backup": "This is not a Calorie Compass backup file.",
+    "unsupported-version": "This backup comes from a newer Calorie Compass. Please update the app first.",
+    "invalid-data": "The backup is incomplete or damaged. Nothing was imported.",
+    "too-large": "The file is larger than 5 MB and is not a valid backup.",
+  },
+};
+
+function describeBackup(summary: BackupSummary, lang: Lang) {
+  return lang === "zh"
+    ? `自定义菜品 ${summary.customFoods} 道 · 对比列表 ${summary.compareFoods} 项 · 每周计划 ${summary.weeks} 周（饮食 ${summary.mealEntries} 条、训练 ${summary.workoutEntries} 条）`
+    : `${summary.customFoods} custom dishes · ${summary.compareFoods} compared foods · ${summary.weeks} planned weeks (${summary.mealEntries} meals, ${summary.workoutEntries} workouts)`;
+}
+
+function skippedNote(summary: BackupSummary, lang: Lang) {
+  if (!summary.skipped) return "";
+  return lang === "zh" ? `另有 ${summary.skipped} 条记录无法读取，已跳过。` : `${summary.skipped} unreadable entries were skipped.`;
+}
+
 function MyDataScreen({ lang }: { lang: Lang }) {
   const text = COPY[lang];
+  const zh = lang === "zh";
+  const planner = usePlanner();
+  const importInputRef = useRef<HTMLInputElement>(null);
+  const [backupStatus, setBackupStatus] = useState<{ tone: "ok" | "error"; text: string } | null>(null);
+  const [pendingImport, setPendingImport] = useState<{ backup: BackupFile; summary: BackupSummary; fileName: string } | null>(null);
   const [items, setItems] = useState<CustomFood[]>(readCustomFoods);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formOpen, setFormOpen] = useState(false);
@@ -968,6 +1049,78 @@ function MyDataScreen({ lang }: { lang: Lang }) {
     window.localStorage.setItem(COMPARE_FOODS_KEY, JSON.stringify(compareIds));
   };
 
+  const exportBackup = async () => {
+    setPendingImport(null);
+    const failed = { tone: "error" as const, text: zh ? "导出失败，请重试。" : "Export failed. Please try again." };
+    try {
+      const { backup, summary } = createBackupWithReport(window.localStorage);
+      const json = serializeBackup(backup);
+      const note = skippedNote(summary, lang);
+      if (window.calorieCompass?.exportBackup) {
+        const result = await window.calorieCompass.exportBackup(json, backupFileName());
+        if (result.canceled) return;
+        setBackupStatus(result.saved
+          ? { tone: "ok", text: (zh ? `备份已保存：${result.filePath}` : `Backup saved: ${result.filePath}`) + (note ? ` ${note}` : "") }
+          : failed);
+        return;
+      }
+      const fileName = backupFileName(new Date(), "ascii");
+      const url = URL.createObjectURL(new Blob([json], { type: "application/json" }));
+      const anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.download = fileName;
+      document.body.append(anchor);
+      anchor.click();
+      anchor.remove();
+      window.setTimeout(() => URL.revokeObjectURL(url), 2000);
+      setBackupStatus({ tone: "ok", text: (zh ? `已下载备份文件：${fileName}` : `Backup downloaded: ${fileName}`) + (note ? ` ${note}` : "") });
+    } catch {
+      setBackupStatus(failed);
+    }
+  };
+
+  const readImportFile = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+    setPendingImport(null);
+    if (file.size > MAX_BACKUP_BYTES) {
+      setBackupStatus({ tone: "error", text: BACKUP_ERROR_TEXT[lang]["too-large"] });
+      return;
+    }
+    let text: string;
+    try {
+      text = await file.text();
+    } catch {
+      setBackupStatus({ tone: "error", text: BACKUP_ERROR_TEXT[lang]["invalid-json"] });
+      return;
+    }
+    const parsed = parseBackup(text);
+    if (!parsed.ok) {
+      setBackupStatus({ tone: "error", text: BACKUP_ERROR_TEXT[lang][parsed.error] });
+      return;
+    }
+    setBackupStatus(null);
+    setPendingImport({ backup: parsed.backup, summary: parsed.summary, fileName: file.name });
+  };
+
+  const confirmImport = () => {
+    if (!pendingImport) return;
+    try {
+      applyBackup(window.localStorage, pendingImport.backup);
+    } catch {
+      setPendingImport(null);
+      setBackupStatus({ tone: "error", text: zh ? "导入失败：无法写入本机存储，原有数据没有改变。" : "Import failed: this device's storage could not be written. Your data was not changed." });
+      return;
+    }
+    planner.reloadFromStorage();
+    setItems(readCustomFoods());
+    setFormOpen(false);
+    setEditingId(null);
+    setPendingImport(null);
+    setBackupStatus({ tone: "ok", text: zh ? "导入完成，数据已恢复。" : "Import complete. Your data has been restored." });
+  };
+
   const numberField = (key: keyof Pick<CustomFood, "kcalPer100G" | "servingWeightG" | "proteinPer100G" | "carbohydratePer100G" | "fatPer100G" | "fiberPer100G">, labelText: string, step = "0.1") => (
     <label><span>{labelText}</span><DesktopInput required={key === "kcalPer100G" || key === "servingWeightG"} type="number" min={key === "servingWeightG" ? 1 : 0} step={step} value={draft[key]} onChange={(event) => setDraft((current) => ({ ...current, [key]: Number(event.target.value) }))} /></label>
   );
@@ -1004,6 +1157,29 @@ function MyDataScreen({ lang }: { lang: Lang }) {
           </article>)}
           {!items.length && !formOpen ? <div className="empty-foods custom-empty"><PersonIcon width={22} height={22} /><span>{lang === "zh" ? "还没有自定义菜品，点击上方按钮添加。" : "No custom dishes yet. Use the button above to add one."}</span></div> : null}
         </div>
+
+        <section className="backup-card" aria-labelledby="backup-title">
+          <div className="backup-heading">
+            <span className="feature-icon sky"><ArchiveIcon width={19} height={19} /></span>
+            <div>
+              <strong id="backup-title">{zh ? "数据备份" : "Data backup"}</strong>
+              <small>{zh ? "把自定义菜品、对比列表和每周计划导出成一个文件；换电脑或重装后可以导入恢复。" : "Save your custom dishes, comparison list and weekly plans to one file, then import it after reinstalling or on another computer."}</small>
+            </div>
+          </div>
+          <div className="backup-actions">
+            <button className="secondary-action backup-export-button" onClick={exportBackup}><DownloadIcon width={17} height={17} />{zh ? "导出备份" : "Export backup"}</button>
+            <button className="secondary-action backup-import-button" onClick={() => importInputRef.current?.click()}><UploadIcon width={17} height={17} />{zh ? "导入备份" : "Import backup"}</button>
+            <input ref={importInputRef} className="backup-file-input" type="file" accept=".json,application/json" onChange={readImportFile} hidden />
+          </div>
+          {pendingImport ? <div className="backup-confirm" role="group" aria-labelledby="backup-confirm-text">
+            <p id="backup-confirm-text"><InfoCircledIcon width={16} height={16} /><span>{zh ? `即将导入「${pendingImport.fileName}」：` : `Ready to import "${pendingImport.fileName}":`}<b>{describeBackup(pendingImport.summary, lang)}</b>{skippedNote(pendingImport.summary, lang)}{zh ? "导入会替换本机上的这些数据。如需保留当前数据，请先导出一份备份。" : "This replaces the same data on this device. Export a backup first if you want to keep it."}</span></p>
+            <div className="backup-actions">
+              <button className="primary-action backup-confirm-button" onClick={confirmImport}><CheckIcon width={17} height={17} />{zh ? "确认导入" : "Import now"}</button>
+              <button className="secondary-action backup-cancel-button" onClick={() => setPendingImport(null)}>{zh ? "取消" : "Cancel"}</button>
+            </div>
+          </div> : null}
+          {backupStatus ? <p className={`backup-status ${backupStatus.tone}`} role="status">{backupStatus.text}</p> : null}
+        </section>
       </main>
     </MobileScroll>
   );

@@ -1,10 +1,36 @@
-const { app, BrowserWindow, Menu, dialog, ipcMain } = require("electron");
-const http = require("node:http");
+const { app, BrowserWindow, Menu, dialog, ipcMain, protocol } = require("electron");
 const fs = require("node:fs");
+const os = require("node:os");
 const path = require("node:path");
 
 const CONTENT_WIDTH = 460;
 const CONTENT_HEIGHT = 860;
+
+// The UI is served from a fixed custom origin. Browser storage (localStorage) is keyed by
+// origin, so the origin must never change between launches or upgrades. v2.5 served the UI
+// from http://127.0.0.1 on a random port, which gave every launch a new, empty storage.
+// Do not go back to a random port, and never rename this scheme/host: doing so would hide
+// all data users have saved.
+const APP_SCHEME = "app";
+const APP_HOST = "calorie-compass";
+const APP_URL = `${APP_SCHEME}://${APP_HOST}/`;
+const MAX_BACKUP_BYTES = 5 * 1024 * 1024;
+
+protocol.registerSchemesAsPrivileged([
+  {
+    scheme: APP_SCHEME,
+    privileges: { standard: true, secure: true, supportFetchAPI: true, corsEnabled: true },
+  },
+]);
+
+// Automated runs use an isolated profile so they never touch the user's saved data:
+// CALORIE_COMPASS_USER_DATA_DIR for tests, and a fresh temporary profile for --verify-output
+// (which clears and rewrites storage while it clicks through the app).
+if (process.env.CALORIE_COMPASS_USER_DATA_DIR) {
+  app.setPath("userData", path.resolve(process.env.CALORIE_COMPASS_USER_DATA_DIR));
+} else if (process.argv.some((value) => value.startsWith("--verify-output="))) {
+  app.setPath("userData", fs.mkdtempSync(path.join(os.tmpdir(), "calorie-compass-verify-")));
+}
 
 const mimeTypes = {
   ".css": "text/css; charset=utf-8",
@@ -21,7 +47,6 @@ const mimeTypes = {
   ".woff2": "font/woff2",
 };
 
-let localServer;
 let mainWindow;
 
 ipcMain.handle("report:export-png", async (event, payload) => {
@@ -50,6 +75,28 @@ ipcMain.handle("report:export-png", async (event, payload) => {
   }
 });
 
+ipcMain.handle("backup:export-json", async (event, payload) => {
+  if (!mainWindow || event.sender !== mainWindow.webContents) {
+    return { saved: false, canceled: false, error: "Invalid window" };
+  }
+  const json = typeof payload?.json === "string" ? payload.json : "";
+  if (!json || Buffer.byteLength(json, "utf8") > MAX_BACKUP_BYTES) {
+    return { saved: false, canceled: false, error: "Invalid backup content" };
+  }
+  try {
+    const result = await dialog.showSaveDialog(mainWindow, {
+      title: "导出数据备份",
+      defaultPath: String(payload?.defaultName || "燃卡快查-数据备份.json").replace(/[\\/:*?"<>|]/g, "-"),
+      filters: [{ name: "JSON 备份文件", extensions: ["json"] }],
+    });
+    if (result.canceled || !result.filePath) return { saved: false, canceled: true };
+    fs.writeFileSync(result.filePath, json, "utf8");
+    return { saved: true, canceled: false, filePath: result.filePath };
+  } catch (error) {
+    return { saved: false, canceled: false, error: error instanceof Error ? error.message : String(error) };
+  }
+});
+
 function verifyOutputDirectory() {
   const prefix = "--verify-output=";
   const argument = process.argv.find((value) => value.startsWith(prefix));
@@ -67,65 +114,52 @@ function appRoot() {
 }
 
 function resolveRequest(root, requestPath) {
-  const cleanPath = decodeURIComponent(requestPath).replace(/^\/+/, "");
+  let cleanPath;
+  try {
+    cleanPath = decodeURIComponent(requestPath).replace(/^\/+/, "");
+  } catch {
+    return null;
+  }
   const resolved = path.resolve(root, cleanPath || "index.html");
   const relative = path.relative(root, resolved);
 
   if (relative.startsWith("..") || path.isAbsolute(relative)) return null;
   if (fs.existsSync(resolved) && fs.statSync(resolved).isFile()) return resolved;
-  return path.join(root, "index.html");
+  // Unknown app routes fall back to the app shell; a missing file (has an extension) is a 404.
+  return path.extname(resolved) ? null : path.join(root, "index.html");
 }
 
-function startLocalServer() {
+function registerAppProtocol() {
   const root = appRoot();
 
-  return new Promise((resolve, reject) => {
-    localServer = http.createServer((request, response) => {
-      try {
-        if (request.method !== "GET" && request.method !== "HEAD") {
-          response.writeHead(405, { Allow: "GET, HEAD" });
-          response.end();
-          return;
-        }
+  protocol.handle(APP_SCHEME, async (request) => {
+    if (request.method !== "GET" && request.method !== "HEAD") {
+      return new Response(null, { status: 405, headers: { Allow: "GET, HEAD" } });
+    }
 
-        const requestUrl = new URL(request.url || "/", "http://127.0.0.1");
-        const filePath = resolveRequest(root, requestUrl.pathname);
+    const requestUrl = new URL(request.url);
+    const filePath = requestUrl.host === APP_HOST ? resolveRequest(root, requestUrl.pathname) : null;
+    if (!filePath) return new Response("Not found", { status: 404 });
 
-        if (!filePath || !fs.existsSync(filePath)) {
-          response.writeHead(404);
-          response.end("Not found");
-          return;
-        }
-
-        const extension = path.extname(filePath).toLowerCase();
-        response.writeHead(200, {
+    try {
+      const body = request.method === "HEAD" ? null : await fs.promises.readFile(filePath);
+      return new Response(body, {
+        status: 200,
+        headers: {
           "Cache-Control": "no-store",
-          "Content-Type": mimeTypes[extension] || "application/octet-stream",
+          "Content-Type": mimeTypes[path.extname(filePath).toLowerCase()] || "application/octet-stream",
           "X-Content-Type-Options": "nosniff",
-        });
-
-        if (request.method === "HEAD") {
-          response.end();
-          return;
-        }
-
-        fs.createReadStream(filePath).pipe(response);
-      } catch {
-        response.writeHead(500);
-        response.end("Internal error");
-      }
-    });
-
-    localServer.once("error", reject);
-    localServer.listen(0, "127.0.0.1", () => {
-      const address = localServer.address();
-      resolve(`http://127.0.0.1:${address.port}/`);
-    });
+        },
+      });
+    } catch {
+      return new Response("Not found", { status: 404 });
+    }
   });
 }
 
 async function createWindow() {
-  const localUrl = await startLocalServer();
+  registerAppProtocol();
+  const localUrl = APP_URL;
   const verifyDirectory = verifyOutputDirectory();
   const verificationConsoleIssues = [];
 
@@ -353,7 +387,7 @@ async function createWindow() {
     const result = {
       responsive: mainWindow.isResizable(),
       contentSize: { width: contentWidth, height: contentHeight },
-      bundledFoodRecords: 128,
+      origin: await mainWindow.webContents.executeJavaScript("location.origin"),
       food: foodMetrics,
       nutrition: nutritionMetrics,
       workout: workoutMetrics,
@@ -402,7 +436,4 @@ if (!hasLock) {
   });
 
   app.on("window-all-closed", () => app.quit());
-  app.on("before-quit", () => {
-    if (localServer) localServer.close();
-  });
 }

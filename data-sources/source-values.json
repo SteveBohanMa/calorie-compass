@@ -1,0 +1,3253 @@
+{
+ "updatedAt": "2026-10-16",
+ "foods": [
+  {
+   "id": "f001",
+   "zh": "白米饭",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 130,
+   "ProteinPer100G": 2.7,
+   "CarbohydratePer100G": 28.2,
+   "FatPer100G": 0.3,
+   "FiberPer100G": 0.4,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "169757",
+     "name": "Rice, white, long-grain, regular, unenriched, cooked without salt",
+     "grams": 100
+    }
+   ],
+   "checks": [
+    {
+     "src": "MEXT",
+     "code": "01088",
+     "name": "こめ ［水稲めし］ 精白米 うるち米",
+     "kcal": 156.0,
+     "diff_pct": 20.0
+    }
+   ],
+   "chinaTablesLater": true,
+   "review": "三个来源含水量不同差距大；国内蒸米饭以中国表为准，书到之前先用 USDA"
+  },
+  {
+   "id": "f002",
+   "zh": "糙米饭",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 123,
+   "ProteinPer100G": 2.7,
+   "CarbohydratePer100G": 25.6,
+   "FatPer100G": 1.0,
+   "FiberPer100G": 1.6,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "169704",
+     "name": "Rice, brown, long-grain, cooked (Includes foods for USDA's Food Distribution Program)",
+     "grams": 100
+    }
+   ],
+   "checks": [
+    {
+     "src": "MEXT",
+     "code": "01085",
+     "name": "こめ ［水稲めし］ 玄米",
+     "kcal": 152.0,
+     "diff_pct": 23.6
+    }
+   ],
+   "chinaTablesLater": false,
+   "review": "日本糙米饭煮得更干（含水 60% 对 70%），所以每 100 g 热量更高"
+  },
+  {
+   "id": "f003",
+   "zh": "燕麦粥",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 71,
+   "ProteinPer100G": 2.5,
+   "CarbohydratePer100G": 12.0,
+   "FatPer100G": 1.5,
+   "FiberPer100G": 1.7,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "173905",
+     "name": "Cereals, oats, regular and quick, unenriched, cooked with water (includes boiling and microwaving), without salt",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f004",
+   "zh": "全麦面包",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 252,
+   "ProteinPer100G": 12.4,
+   "CarbohydratePer100G": 42.7,
+   "FatPer100G": 3.5,
+   "FiberPer100G": 6.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "172688",
+     "name": "Bread, whole-wheat, commercially prepared",
+     "grams": 100
+    }
+   ],
+   "checks": [
+    {
+     "src": "MEXT",
+     "code": "01208",
+     "name": "こむぎ ［パン類］ 全粒粉パン",
+     "kcal": 251.0,
+     "diff_pct": -0.4
+    }
+   ],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f005",
+   "zh": "烤红薯",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 90,
+   "ProteinPer100G": 2.0,
+   "CarbohydratePer100G": 20.7,
+   "FatPer100G": 0.1,
+   "FiberPer100G": 3.3,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "168483",
+     "name": "Sweet potato, cooked, baked in skin, flesh, without salt",
+     "grams": 100
+    }
+   ],
+   "checks": [
+    {
+     "src": "MEXT",
+     "code": "02008",
+     "name": "＜いも類＞ （さつまいも類） さつまいも 塊根 皮なし 焼き",
+     "kcal": 151.0,
+     "diff_pct": 67.8
+    }
+   ],
+   "chinaTablesLater": true,
+   "review": "美国橙心红薯含水多；日本红薯淀粉多。国内品种不一"
+  },
+  {
+   "id": "f006",
+   "zh": "水煮玉米",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 96,
+   "ProteinPer100G": 3.4,
+   "CarbohydratePer100G": 21.0,
+   "FatPer100G": 1.5,
+   "FiberPer100G": 2.4,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "169999",
+     "name": "Corn, sweet, yellow, cooked, boiled, drained, without salt",
+     "grams": 100
+    }
+   ],
+   "checks": [
+    {
+     "src": "MEXT",
+     "code": "06176",
+     "name": "（とうもろこし類） スイートコーン 未熟種子 ゆで",
+     "kcal": 95.0,
+     "diff_pct": -1.0
+    }
+   ],
+   "chinaTablesLater": true,
+   "review": ""
+  },
+  {
+   "id": "f007",
+   "zh": "清蒸土豆",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 76,
+   "ProteinPer100G": 1.9,
+   "CarbohydratePer100G": 18.1,
+   "FatPer100G": 0.3,
+   "FiberPer100G": 3.5,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "02018",
+     "name": "＜いも類＞ じゃがいも 塊茎 皮なし 蒸し",
+     "grams": 100
+    }
+   ],
+   "checks": [
+    {
+     "src": "SR",
+     "code": "170440",
+     "name": "Potatoes, boiled, cooked without skin, flesh, without salt",
+     "kcal": 86.0,
+     "diff_pct": 13.2
+    }
+   ],
+   "chinaTablesLater": false,
+   "review": "日本表有“蒸”的实测值"
+  },
+  {
+   "id": "f008",
+   "zh": "白煮鸡胸肉",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 151,
+   "ProteinPer100G": 29.0,
+   "CarbohydratePer100G": 0.0,
+   "FatPer100G": 3.0,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "171478",
+     "name": "Chicken, broilers or fryers, breast, meat only, cooked, stewed",
+     "grams": 100
+    }
+   ],
+   "checks": [
+    {
+     "src": "FDN",
+     "code": "331960",
+     "name": "Chicken, broiler or fryers, breast, skinless, boneless, meat only, cooked, braised",
+     "kcal": 166.0,
+     "diff_pct": 9.9
+    }
+   ],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f009",
+   "zh": "香煎鸡胸肉",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 187,
+   "ProteinPer100G": 33.4,
+   "CarbohydratePer100G": 0.5,
+   "FatPer100G": 4.7,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "171078",
+     "name": "Chicken, broilers or fryers, breast, meat only, cooked, fried",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f010",
+   "zh": "烤鸡胸肉",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 165,
+   "ProteinPer100G": 31.0,
+   "CarbohydratePer100G": 0.0,
+   "FatPer100G": 3.6,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "171477",
+     "name": "Chicken, broilers or fryers, breast, meat only, cooked, roasted",
+     "grams": 100
+    }
+   ],
+   "checks": [
+    {
+     "src": "MEXT",
+     "code": "11288",
+     "name": "＜鳥肉類＞ にわとり ［若どり・主品目］ むね 皮なし 焼き",
+     "kcal": 177.0,
+     "diff_pct": 7.3
+    }
+   ],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f011",
+   "zh": "水煮鸡蛋",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 134,
+   "ProteinPer100G": 12.5,
+   "CarbohydratePer100G": 0.3,
+   "FatPer100G": 10.4,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "12005",
+     "name": "鶏卵 全卵 ゆで",
+     "grams": 100
+    }
+   ],
+   "checks": [
+    {
+     "src": "SR",
+     "code": "173424",
+     "name": "Egg, whole, cooked, hard-boiled",
+     "kcal": 155.0,
+     "diff_pct": 15.7
+    }
+   ],
+   "chinaTablesLater": true,
+   "review": ""
+  },
+  {
+   "id": "f012",
+   "zh": "煎鸡蛋",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 196,
+   "ProteinPer100G": 13.6,
+   "CarbohydratePer100G": 0.8,
+   "FatPer100G": 14.8,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "173423",
+     "name": "Egg, whole, cooked, fried",
+     "grams": 100
+    }
+   ],
+   "checks": [
+    {
+     "src": "MEXT",
+     "code": "12021",
+     "name": "鶏卵 全卵 目玉焼き",
+     "kcal": 205.0,
+     "diff_pct": 4.6
+    }
+   ],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f013",
+   "zh": "卤牛肉",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 201,
+   "ProteinPer100G": 33.7,
+   "CarbohydratePer100G": 0.0,
+   "FatPer100G": 6.4,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "169442",
+     "name": "Beef, shank crosscuts, separable lean only, trimmed to 1/4\" fat, choice, cooked, simmered",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": true,
+   "review": ""
+  },
+  {
+   "id": "f014",
+   "zh": "香煎牛排",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 212,
+   "ProteinPer100G": 29.3,
+   "CarbohydratePer100G": 0.0,
+   "FatPer100G": 9.7,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "169457",
+     "name": "Beef, top sirloin, steak, separable lean and fat, trimmed to 0\" fat, all grades, cooked, broiled",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f015",
+   "zh": "清炒牛肉",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 198,
+   "ProteinPer100G": 28.6,
+   "CarbohydratePer100G": 0.0,
+   "FatPer100G": 8.6,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "168649",
+     "name": "Beef, round, top round steak, boneless, separable lean only, trimmed to 0\" fat, all grades, cooked, grilled",
+     "label": "熟瘦牛肉",
+     "grams": 95
+    },
+    {
+     "src": "SR",
+     "code": "171411",
+     "name": "Oil, soybean, salad or cooking",
+     "label": "大豆油",
+     "grams": 5
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f016",
+   "zh": "清蒸鱼柳",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 128,
+   "ProteinPer100G": 26.1,
+   "CarbohydratePer100G": 0.0,
+   "FatPer100G": 2.6,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "175177",
+     "name": "Fish, tilapia, cooked, dry heat",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f017",
+   "zh": "水煮虾仁",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 99,
+   "ProteinPer100G": 24.0,
+   "CarbohydratePer100G": 0.2,
+   "FatPer100G": 0.3,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "175180",
+     "name": "Crustaceans, shrimp, cooked",
+     "grams": 100
+    }
+   ],
+   "checks": [
+    {
+     "src": "MEXT",
+     "code": "10322",
+     "name": "＜えび・かに類＞ （えび類） くるまえび 養殖 ゆで",
+     "kcal": 116.0,
+     "diff_pct": 17.2
+    }
+   ],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f018",
+   "zh": "北豆腐",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 73,
+   "ProteinPer100G": 7.0,
+   "CarbohydratePer100G": 1.5,
+   "FatPer100G": 4.9,
+   "FiberPer100G": 1.1,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "04032",
+     "name": "だいず ［豆腐・油揚げ類］ 木綿豆腐",
+     "grams": 100
+    }
+   ],
+   "checks": [
+    {
+     "src": "SR",
+     "code": "172448",
+     "name": "Tofu, firm, prepared with calcium sulfate and magnesium chloride (nigari)",
+     "kcal": 78.0,
+     "diff_pct": 6.8
+    }
+   ],
+   "chinaTablesLater": true,
+   "review": "暂用日本木棉豆腐；美国 firm tofu 差别大"
+  },
+  {
+   "id": "f019",
+   "zh": "凉拌豆腐",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 97,
+   "ProteinPer100G": 6.8,
+   "CarbohydratePer100G": 1.8,
+   "FatPer100G": 7.5,
+   "FiberPer100G": 1.0,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "04032",
+     "name": "だいず ［豆腐・油揚げ類］ 木綿豆腐",
+     "label": "北豆腐",
+     "grams": 92
+    },
+    {
+     "src": "SR",
+     "code": "171016",
+     "name": "Oil, sesame, salad or cooking",
+     "label": "香油",
+     "grams": 3
+    },
+    {
+     "src": "MEXT",
+     "code": "17007",
+     "name": "＜調味料類＞ （しょうゆ類） こいくちしょうゆ",
+     "label": "酱油",
+     "grams": 5
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f020",
+   "zh": "西兰花",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 35,
+   "ProteinPer100G": 2.4,
+   "CarbohydratePer100G": 7.2,
+   "FatPer100G": 0.4,
+   "FiberPer100G": 3.3,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "169967",
+     "name": "Broccoli, cooked, boiled, drained, without salt",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f021",
+   "zh": "清炒上海青",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 36,
+   "ProteinPer100G": 0.8,
+   "CarbohydratePer100G": 2.2,
+   "FatPer100G": 3.2,
+   "FiberPer100G": 1.4,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "06338",
+     "name": "チンゲンサイ 葉 油いため",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f022",
+   "zh": "凉拌黄瓜",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 34,
+   "ProteinPer100G": 0.8,
+   "CarbohydratePer100G": 3.7,
+   "FatPer100G": 2.1,
+   "FiberPer100G": 0.5,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "168409",
+     "name": "Cucumber, with peel, raw",
+     "label": "黄瓜",
+     "grams": 95
+    },
+    {
+     "src": "SR",
+     "code": "171016",
+     "name": "Oil, sesame, salad or cooking",
+     "label": "香油",
+     "grams": 2
+    },
+    {
+     "src": "MEXT",
+     "code": "17007",
+     "name": "＜調味料類＞ （しょうゆ類） こいくちしょうゆ",
+     "label": "酱油",
+     "grams": 3
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f023",
+   "zh": "蔬菜沙拉（无酱）",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 17,
+   "ProteinPer100G": 1.0,
+   "CarbohydratePer100G": 3.5,
+   "FatPer100G": 0.2,
+   "FiberPer100G": 1.5,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "169247",
+     "name": "Lettuce, cos or romaine, raw",
+     "label": "生菜",
+     "grams": 50
+    },
+    {
+     "src": "SR",
+     "code": "170457",
+     "name": "Tomatoes, red, ripe, raw, year round average",
+     "label": "番茄",
+     "grams": 30
+    },
+    {
+     "src": "SR",
+     "code": "168409",
+     "name": "Cucumber, with peel, raw",
+     "label": "黄瓜",
+     "grams": 20
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f024",
+   "zh": "香蕉",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 93,
+   "ProteinPer100G": 1.1,
+   "CarbohydratePer100G": 22.5,
+   "FatPer100G": 0.2,
+   "FiberPer100G": 1.1,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "07107",
+     "name": "バナナ 生",
+     "grams": 100
+    }
+   ],
+   "checks": [
+    {
+     "src": "SR",
+     "code": "173944",
+     "name": "Bananas, raw",
+     "kcal": 89.0,
+     "diff_pct": -4.3
+    }
+   ],
+   "chinaTablesLater": true,
+   "review": ""
+  },
+  {
+   "id": "f025",
+   "zh": "苹果",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 52,
+   "ProteinPer100G": 0.3,
+   "CarbohydratePer100G": 13.8,
+   "FatPer100G": 0.2,
+   "FiberPer100G": 2.4,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "171688",
+     "name": "Apples, raw, with skin (Includes foods for USDA's Food Distribution Program)",
+     "grams": 100
+    }
+   ],
+   "checks": [
+    {
+     "src": "MEXT",
+     "code": "07176",
+     "name": "りんご 皮つき 生",
+     "kcal": 56.0,
+     "diff_pct": 7.7
+    }
+   ],
+   "chinaTablesLater": true,
+   "review": ""
+  },
+  {
+   "id": "f026",
+   "zh": "原味无糖酸奶",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 63,
+   "ProteinPer100G": 5.2,
+   "CarbohydratePer100G": 7.0,
+   "FatPer100G": 1.6,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "170886",
+     "name": "Yogurt, plain, low fat",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f027",
+   "zh": "低脂牛奶",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 42,
+   "ProteinPer100G": 3.4,
+   "CarbohydratePer100G": 5.0,
+   "FatPer100G": 1.0,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "170872",
+     "name": "Milk, lowfat, fluid, 1% milkfat, with added vitamin A and vitamin D",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f028",
+   "zh": "巴旦木",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 598,
+   "ProteinPer100G": 21.0,
+   "CarbohydratePer100G": 21.0,
+   "FatPer100G": 52.5,
+   "FiberPer100G": 10.9,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "170158",
+     "name": "Nuts, almonds, dry roasted, without salt added",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f029",
+   "zh": "花生酱",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 598,
+   "ProteinPer100G": 22.2,
+   "CarbohydratePer100G": 22.3,
+   "FatPer100G": 51.4,
+   "FiberPer100G": 5.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "172470",
+     "name": "Peanut butter, smooth style, without salt",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f030",
+   "zh": "沙拉酱",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 680,
+   "ProteinPer100G": 1.0,
+   "CarbohydratePer100G": 0.6,
+   "FatPer100G": 74.8,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "171009",
+     "name": "Salad dressing, mayonnaise, regular",
+     "grams": 100
+    }
+   ],
+   "checks": [
+    {
+     "src": "MEXT",
+     "code": "17042",
+     "name": "＜調味料類＞ （ドレッシング類） 半固体状ドレッシング マヨネーズ 全卵型",
+     "kcal": 668.0,
+     "diff_pct": -1.8
+    }
+   ],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f031",
+   "zh": "关东煮白萝卜",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 15,
+   "ProteinPer100G": 0.5,
+   "CarbohydratePer100G": 4.0,
+   "FatPer100G": 0.1,
+   "FiberPer100G": 1.7,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "06135",
+     "name": "（だいこん類） だいこん 根 皮なし ゆで",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f032",
+   "zh": "关东煮鱼豆腐",
+   "status": "ready",
+   "grade": "C",
+   "kcal": 116,
+   "ProteinPer100G": 11.3,
+   "CarbohydratePer100G": 12.6,
+   "FatPer100G": 2.4,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "10386",
+     "name": "＜水産練り製品＞ さつま揚げ",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f033",
+   "zh": "关东煮魔芋结",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 7,
+   "ProteinPer100G": 0.2,
+   "CarbohydratePer100G": 3.0,
+   "FatPer100G": 0.0,
+   "FiberPer100G": 2.9,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "02005",
+     "name": "＜いも類＞ こんにゃく しらたき",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f034",
+   "zh": "关东煮鸡蛋",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 134,
+   "ProteinPer100G": 12.5,
+   "CarbohydratePer100G": 0.3,
+   "FatPer100G": 10.4,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "12005",
+     "name": "鶏卵 全卵 ゆで",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f035",
+   "zh": "关东煮海带结",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 28,
+   "ProteinPer100G": 1.1,
+   "CarbohydratePer100G": 11.6,
+   "FatPer100G": 0.3,
+   "FiberPer100G": 8.7,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "09056",
+     "name": "（こんぶ類） まこんぶ 素干し 水煮",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f036",
+   "zh": "关东煮汤汁",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 18,
+   "ProteinPer100G": 0.7,
+   "CarbohydratePer100G": 2.8,
+   "FatPer100G": 0.0,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "17021",
+     "name": "＜調味料類＞ （だし類） かつお・昆布だし 荒節・昆布だし",
+     "label": "高汤",
+     "grams": 90
+    },
+    {
+     "src": "MEXT",
+     "code": "17007",
+     "name": "＜調味料類＞ （しょうゆ類） こいくちしょうゆ",
+     "label": "酱油",
+     "grams": 5
+    },
+    {
+     "src": "MEXT",
+     "code": "16025",
+     "name": "＜アルコール飲料類＞ （混成酒類） みりん 本みりん",
+     "label": "味醂",
+     "grams": 5
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f037",
+   "zh": "鲜肉包",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 242,
+   "ProteinPer100G": 10.0,
+   "CarbohydratePer100G": 43.4,
+   "FatPer100G": 5.1,
+   "FiberPer100G": 3.2,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "15035",
+     "name": "＜和生菓子・和半生菓子類＞ まんじゅう 中華まんじゅう 肉まん",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f038",
+   "zh": "菜包",
+   "status": "pending-cn",
+   "review": "USDA 和日本表都没有素包子，等中国表"
+  },
+  {
+   "id": "f039",
+   "zh": "三角饭团（鲔鱼）",
+   "status": "ready",
+   "grade": "C",
+   "kcal": 202,
+   "ProteinPer100G": 4.2,
+   "CarbohydratePer100G": 33.7,
+   "FatPer100G": 6.0,
+   "FiberPer100G": 0.3,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "01111",
+     "name": "こめ ［うるち米製品］ おにぎり",
+     "label": "饭团米饭",
+     "grams": 85
+    },
+    {
+     "src": "MEXT",
+     "code": "10263",
+     "name": "＜魚類＞ （まぐろ類） 缶詰 油漬 フレーク ライト",
+     "label": "油浸金枪鱼",
+     "grams": 10.5
+    },
+    {
+     "src": "MEXT",
+     "code": "17042",
+     "name": "＜調味料類＞ （ドレッシング類） 半固体状ドレッシング マヨネーズ 全卵型",
+     "label": "蛋黄酱",
+     "grams": 4.5
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f040",
+   "zh": "鸡肉饭团",
+   "status": "ready",
+   "grade": "C",
+   "kcal": 166,
+   "ProteinPer100G": 6.1,
+   "CarbohydratePer100G": 33.5,
+   "FatPer100G": 1.1,
+   "FiberPer100G": 0.3,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "01111",
+     "name": "こめ ［うるち米製品］ おにぎり",
+     "label": "饭团米饭",
+     "grams": 85
+    },
+    {
+     "src": "MEXT",
+     "code": "11225",
+     "name": "＜鳥肉類＞ にわとり ［若どり・主品目］ もも 皮なし 焼き",
+     "label": "烤鸡腿肉",
+     "grams": 15
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f041",
+   "zh": "火腿芝士三明治",
+   "status": "ready",
+   "grade": "C",
+   "kcal": 237,
+   "ProteinPer100G": 11.4,
+   "CarbohydratePer100G": 22.4,
+   "FatPer100G": 12.5,
+   "FiberPer100G": 2.1,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "01175",
+     "name": "こむぎ ［パン類］ 角形食パン 耳を除いたもの",
+     "label": "吐司",
+     "grams": 50
+    },
+    {
+     "src": "MEXT",
+     "code": "11176",
+     "name": "＜畜肉類＞ ぶた ［ハム類］ ロースハム ロースハム",
+     "label": "火腿",
+     "grams": 20
+    },
+    {
+     "src": "MEXT",
+     "code": "13040",
+     "name": "＜牛乳及び乳製品＞ （チーズ類） プロセスチーズ",
+     "label": "芝士",
+     "grams": 15
+    },
+    {
+     "src": "MEXT",
+     "code": "17042",
+     "name": "＜調味料類＞ （ドレッシング類） 半固体状ドレッシング マヨネーズ 全卵型",
+     "label": "蛋黄酱",
+     "grams": 5
+    },
+    {
+     "src": "SR",
+     "code": "169247",
+     "name": "Lettuce, cos or romaine, raw",
+     "label": "生菜",
+     "grams": 10
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f042",
+   "zh": "鸡蛋三明治",
+   "status": "ready",
+   "grade": "C",
+   "kcal": 260,
+   "ProteinPer100G": 8.7,
+   "CarbohydratePer100G": 21.9,
+   "FatPer100G": 16.9,
+   "FiberPer100G": 1.9,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "01175",
+     "name": "こむぎ ［パン類］ 角形食パン 耳を除いたもの",
+     "label": "吐司",
+     "grams": 50
+    },
+    {
+     "src": "MEXT",
+     "code": "12005",
+     "name": "鶏卵 全卵 ゆで",
+     "label": "水煮蛋",
+     "grams": 35
+    },
+    {
+     "src": "MEXT",
+     "code": "17042",
+     "name": "＜調味料類＞ （ドレッシング類） 半固体状ドレッシング マヨネーズ 全卵型",
+     "label": "蛋黄酱",
+     "grams": 15
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f043",
+   "zh": "烤香肠",
+   "status": "ready",
+   "grade": "C",
+   "kcal": 345,
+   "ProteinPer100G": 13.0,
+   "CarbohydratePer100G": 2.4,
+   "FatPer100G": 31.8,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "11307",
+     "name": "＜畜肉類＞ ぶた ［ソーセージ類］ ウインナーソーセージ 焼き",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f044",
+   "zh": "鸡胸肉沙拉（含酱）",
+   "status": "ready",
+   "grade": "C",
+   "kcal": 114,
+   "ProteinPer100G": 9.7,
+   "CarbohydratePer100G": 4.2,
+   "FatPer100G": 6.8,
+   "FiberPer100G": 1.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "171478",
+     "name": "Chicken, broilers or fryers, breast, meat only, cooked, stewed",
+     "label": "鸡胸肉",
+     "grams": 30
+    },
+    {
+     "src": "SR",
+     "code": "169247",
+     "name": "Lettuce, cos or romaine, raw",
+     "label": "生菜",
+     "grams": 35
+    },
+    {
+     "src": "SR",
+     "code": "170457",
+     "name": "Tomatoes, red, ripe, raw, year round average",
+     "label": "番茄",
+     "grams": 10
+    },
+    {
+     "src": "SR",
+     "code": "168409",
+     "name": "Cucumber, with peel, raw",
+     "label": "黄瓜",
+     "grams": 10
+    },
+    {
+     "src": "MEXT",
+     "code": "17117",
+     "name": "＜調味料類＞ （ドレッシング類） 乳化液状ドレッシング ごまドレッシング",
+     "label": "芝麻沙拉汁",
+     "grams": 15
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f045",
+   "zh": "鸡胸肉沙拉（不含酱）",
+   "status": "ready",
+   "grade": "C",
+   "kcal": 61,
+   "ProteinPer100G": 10.3,
+   "CarbohydratePer100G": 2.3,
+   "FatPer100G": 1.2,
+   "FiberPer100G": 1.1,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "171478",
+     "name": "Chicken, broilers or fryers, breast, meat only, cooked, stewed",
+     "label": "鸡胸肉",
+     "grams": 33
+    },
+    {
+     "src": "SR",
+     "code": "169247",
+     "name": "Lettuce, cos or romaine, raw",
+     "label": "生菜",
+     "grams": 40
+    },
+    {
+     "src": "SR",
+     "code": "170457",
+     "name": "Tomatoes, red, ripe, raw, year round average",
+     "label": "番茄",
+     "grams": 13.5
+    },
+    {
+     "src": "SR",
+     "code": "168409",
+     "name": "Cucumber, with peel, raw",
+     "label": "黄瓜",
+     "grams": 13.5
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f046",
+   "zh": "乌冬面（含汤）",
+   "status": "ready",
+   "grade": "C",
+   "kcal": 58,
+   "ProteinPer100G": 1.9,
+   "CarbohydratePer100G": 12.7,
+   "FatPer100G": 0.2,
+   "FiberPer100G": 0.6,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "01039",
+     "name": "こむぎ ［うどん・そうめん類］ うどん ゆで",
+     "label": "乌冬面",
+     "grams": 48
+    },
+    {
+     "src": "MEXT",
+     "code": "17029",
+     "name": "＜調味料類＞ （だし類） めんつゆ ストレート",
+     "label": "面汁",
+     "grams": 26
+    },
+    {
+     "src": "MEXT",
+     "code": "17021",
+     "name": "＜調味料類＞ （だし類） かつお・昆布だし 荒節・昆布だし",
+     "label": "高汤",
+     "grams": 26
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f047",
+   "zh": "鸡肉便当",
+   "status": "ready",
+   "grade": "C",
+   "kcal": 146,
+   "ProteinPer100G": 7.2,
+   "CarbohydratePer100G": 19.2,
+   "FatPer100G": 5.1,
+   "FiberPer100G": 1.1,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "01088",
+     "name": "こめ ［水稲めし］ 精白米 うるち米",
+     "label": "米饭",
+     "grams": 50
+    },
+    {
+     "src": "MEXT",
+     "code": "11225",
+     "name": "＜鳥肉類＞ にわとり ［若どり・主品目］ もも 皮なし 焼き",
+     "label": "烤鸡腿肉",
+     "grams": 22
+    },
+    {
+     "src": "MEXT",
+     "code": "06338",
+     "name": "チンゲンサイ 葉 油いため",
+     "label": "炒青菜",
+     "grams": 23
+    },
+    {
+     "src": "SR",
+     "code": "171411",
+     "name": "Oil, soybean, salad or cooking",
+     "label": "大豆油",
+     "grams": 3
+    },
+    {
+     "src": "MEXT",
+     "code": "17007",
+     "name": "＜調味料類＞ （しょうゆ類） こいくちしょうゆ",
+     "label": "酱油",
+     "grams": 2
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f048",
+   "zh": "牛肉便当",
+   "status": "ready",
+   "grade": "C",
+   "kcal": 159,
+   "ProteinPer100G": 7.7,
+   "CarbohydratePer100G": 19.3,
+   "FatPer100G": 7.0,
+   "FiberPer100G": 1.1,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "01088",
+     "name": "こめ ［水稲めし］ 精白米 うるち米",
+     "label": "米饭",
+     "grams": 50
+    },
+    {
+     "src": "MEXT",
+     "code": "11270",
+     "name": "＜畜肉類＞ うし ［輸入牛肉］ もも 皮下脂肪なし 焼き",
+     "label": "烤牛肉",
+     "grams": 22
+    },
+    {
+     "src": "MEXT",
+     "code": "06338",
+     "name": "チンゲンサイ 葉 油いため",
+     "label": "炒青菜",
+     "grams": 23
+    },
+    {
+     "src": "SR",
+     "code": "171411",
+     "name": "Oil, soybean, salad or cooking",
+     "label": "大豆油",
+     "grams": 3
+    },
+    {
+     "src": "MEXT",
+     "code": "17007",
+     "name": "＜調味料類＞ （しょうゆ類） こいくちしょうゆ",
+     "label": "酱油",
+     "grams": 2
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "f049",
+   "zh": "原味豆浆",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 34,
+   "ProteinPer100G": 2.6,
+   "CarbohydratePer100G": 3.9,
+   "FatPer100G": 0.8,
+   "FiberPer100G": 0.6,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "173768",
+     "name": "Soymilk, original and vanilla, light, unsweetened, with added calcium, vitamins A and D",
+     "grams": 100
+    }
+   ],
+   "checks": [
+    {
+     "src": "MEXT",
+     "code": "04052",
+     "name": "だいず ［その他］ 豆乳 豆乳",
+     "kcal": 43.0,
+     "diff_pct": 26.5
+    }
+   ],
+   "chinaTablesLater": true,
+   "review": ""
+  },
+  {
+   "id": "f050",
+   "zh": "拿铁咖啡（无糖）",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 35,
+   "ProteinPer100G": 2.7,
+   "CarbohydratePer100G": 4.3,
+   "FatPer100G": 0.8,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "171891",
+     "name": "Beverages, coffee, brewed, espresso, restaurant-prepared",
+     "label": "浓缩咖啡",
+     "grams": 60
+    },
+    {
+     "src": "SR",
+     "code": "170872",
+     "name": "Milk, lowfat, fluid, 1% milkfat, with added vitamin A and vitamin D",
+     "label": "低脂牛奶",
+     "grams": 240
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-001",
+   "zh": "熟小米",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 119,
+   "ProteinPer100G": 3.5,
+   "CarbohydratePer100G": 23.7,
+   "FatPer100G": 1.0,
+   "FiberPer100G": 1.3,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "168871",
+     "name": "Millet, cooked",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-002",
+   "zh": "小米粥",
+   "status": "pending-cn",
+   "review": "USDA 和日本表都没有小米粥，等中国表"
+  },
+  {
+   "id": "v24-011",
+   "zh": "熟黑米",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 150,
+   "ProteinPer100G": 3.6,
+   "CarbohydratePer100G": 32.2,
+   "FatPer100G": 1.4,
+   "FiberPer100G": 3.3,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "01184",
+     "name": "こめ ［水稲めし］ 黒米",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": "日本表有黑米饭的实测值"
+  },
+  {
+   "id": "v24-024",
+   "zh": "意大利面（水煮）",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 158,
+   "ProteinPer100G": 5.8,
+   "CarbohydratePer100G": 30.9,
+   "FatPer100G": 0.9,
+   "FiberPer100G": 1.8,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "168928",
+     "name": "Pasta, cooked, unenriched, without added salt",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-026",
+   "zh": "炒米粉",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 147,
+   "ProteinPer100G": 1.7,
+   "CarbohydratePer100G": 22.8,
+   "FatPer100G": 5.2,
+   "FiberPer100G": 0.9,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "168914",
+     "name": "Rice noodles, cooked",
+     "label": "熟米粉",
+     "grams": 95
+    },
+    {
+     "src": "SR",
+     "code": "171411",
+     "name": "Oil, soybean, salad or cooking",
+     "label": "大豆油",
+     "grams": 5
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-028",
+   "zh": "炒乌冬面",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 134,
+   "ProteinPer100G": 2.5,
+   "CarbohydratePer100G": 20.5,
+   "FatPer100G": 5.4,
+   "FiberPer100G": 1.2,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "01039",
+     "name": "こむぎ ［うどん・そうめん類］ うどん ゆで",
+     "label": "乌冬面",
+     "grams": 95
+    },
+    {
+     "src": "SR",
+     "code": "171411",
+     "name": "Oil, soybean, salad or cooking",
+     "label": "大豆油",
+     "grams": 5
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-032",
+   "zh": "烤紫薯",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 122,
+   "ProteinPer100G": 1.2,
+   "CarbohydratePer100G": 31.4,
+   "FatPer100G": 0.3,
+   "FiberPer100G": 3.0,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "02049",
+     "name": "＜いも類＞ （さつまいも類） むらさきいも 塊根 皮なし 蒸し",
+     "grams": 100
+    }
+   ],
+   "checks": [
+    {
+     "src": "SR",
+     "code": "168483",
+     "name": "Sweet potato, cooked, baked in skin, flesh, without salt",
+     "kcal": 90.0,
+     "diff_pct": -26.2
+    }
+   ],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-040",
+   "zh": "烤贝贝南瓜",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 105,
+   "ProteinPer100G": 2.5,
+   "CarbohydratePer100G": 27.7,
+   "FatPer100G": 0.4,
+   "FiberPer100G": 5.3,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "06332",
+     "name": "（かぼちゃ類） 西洋かぼちゃ 果実 焼き",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-042",
+   "zh": "烤板栗",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 207,
+   "ProteinPer100G": 4.9,
+   "CarbohydratePer100G": 48.5,
+   "FatPer100G": 0.9,
+   "FiberPer100G": 8.5,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "05013",
+     "name": "（くり類） 中国ぐり 甘ぐり",
+     "grams": 100
+    }
+   ],
+   "checks": [
+    {
+     "src": "SR",
+     "code": "170573",
+     "name": "Nuts, chestnuts, chinese, roasted",
+     "kcal": 239.0,
+     "diff_pct": 15.5
+    }
+   ],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-047",
+   "zh": "鲜橙子",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 47,
+   "ProteinPer100G": 0.9,
+   "CarbohydratePer100G": 11.8,
+   "FatPer100G": 0.1,
+   "FiberPer100G": 2.4,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "169097",
+     "name": "Oranges, raw, all commercial varieties",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-051",
+   "zh": "鲜葡萄",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 69,
+   "ProteinPer100G": 0.7,
+   "CarbohydratePer100G": 18.1,
+   "FatPer100G": 0.2,
+   "FiberPer100G": 0.9,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "174683",
+     "name": "Grapes, red or green (European type, such as Thompson seedless), raw",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-055",
+   "zh": "鲜蓝莓",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 57,
+   "ProteinPer100G": 0.7,
+   "CarbohydratePer100G": 14.5,
+   "FatPer100G": 0.3,
+   "FiberPer100G": 2.4,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "171711",
+     "name": "Blueberries, raw",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-057",
+   "zh": "鲜草莓",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 32,
+   "ProteinPer100G": 0.7,
+   "CarbohydratePer100G": 7.7,
+   "FatPer100G": 0.3,
+   "FiberPer100G": 2.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "167762",
+     "name": "Strawberries, raw",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-073",
+   "zh": "白灼鸡肝",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 167,
+   "ProteinPer100G": 24.5,
+   "CarbohydratePer100G": 0.9,
+   "FatPer100G": 6.5,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "171061",
+     "name": "Chicken, liver, all classes, cooked, simmered",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-074",
+   "zh": "烤鸡肝",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 172,
+   "ProteinPer100G": 25.8,
+   "CarbohydratePer100G": 1.1,
+   "FatPer100G": 6.4,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "174491",
+     "name": "Chicken, liver, all classes, cooked, pan-fried",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-082",
+   "zh": "香煎猪里脊",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 187,
+   "ProteinPer100G": 30.4,
+   "CarbohydratePer100G": 0.0,
+   "FatPer100G": 6.3,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "168313",
+     "name": "Pork, fresh, loin, tenderloin, separable lean only, cooked, broiled",
+     "grams": 100
+    }
+   ],
+   "checks": [
+    {
+     "src": "MEXT",
+     "code": "11278",
+     "name": "＜畜肉類＞ ぶた ［大型種肉］ ヒレ 赤肉 焼き",
+     "kcal": 202.0,
+     "diff_pct": 8.0
+    }
+   ],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-096",
+   "zh": "烤三文鱼",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 206,
+   "ProteinPer100G": 22.1,
+   "CarbohydratePer100G": 0.0,
+   "FatPer100G": 12.3,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "175168",
+     "name": "Fish, salmon, Atlantic, farmed, cooked, dry heat",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-099",
+   "zh": "清蒸鳕鱼",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 105,
+   "ProteinPer100G": 22.8,
+   "CarbohydratePer100G": 0.0,
+   "FatPer100G": 0.9,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "171956",
+     "name": "Fish, cod, Atlantic, cooked, dry heat",
+     "grams": 100
+    }
+   ],
+   "checks": [
+    {
+     "src": "MEXT",
+     "code": "10206",
+     "name": "＜魚類＞ （たら類） まだら 焼き",
+     "kcal": 103.0,
+     "diff_pct": -1.9
+    }
+   ],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-100",
+   "zh": "烤鳕鱼",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 105,
+   "ProteinPer100G": 22.8,
+   "CarbohydratePer100G": 0.0,
+   "FatPer100G": 0.9,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "171956",
+     "name": "Fish, cod, Atlantic, cooked, dry heat",
+     "grams": 100
+    }
+   ],
+   "checks": [
+    {
+     "src": "MEXT",
+     "code": "10206",
+     "name": "＜魚類＞ （たら類） まだら 焼き",
+     "kcal": 103.0,
+     "diff_pct": -1.9
+    }
+   ],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-101",
+   "zh": "清蒸罗非鱼",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 128,
+   "ProteinPer100G": 26.1,
+   "CarbohydratePer100G": 0.0,
+   "FatPer100G": 2.6,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "175177",
+     "name": "Fish, tilapia, cooked, dry heat",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-102",
+   "zh": "烤罗非鱼",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 128,
+   "ProteinPer100G": 26.1,
+   "CarbohydratePer100G": 0.0,
+   "FatPer100G": 2.6,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "175177",
+     "name": "Fish, tilapia, cooked, dry heat",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-103",
+   "zh": "清蒸鲈鱼",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 124,
+   "ProteinPer100G": 23.6,
+   "CarbohydratePer100G": 0.0,
+   "FatPer100G": 2.6,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "173694",
+     "name": "Fish, sea bass, mixed species, cooked, dry heat",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-104",
+   "zh": "烤鲈鱼",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 124,
+   "ProteinPer100G": 23.6,
+   "CarbohydratePer100G": 0.0,
+   "FatPer100G": 2.6,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "173694",
+     "name": "Fish, sea bass, mixed species, cooked, dry heat",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-105",
+   "zh": "清蒸鲭鱼",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 253,
+   "ProteinPer100G": 22.6,
+   "CarbohydratePer100G": 0.3,
+   "FatPer100G": 22.6,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "10155",
+     "name": "＜魚類＞ （さば類） まさば 水煮",
+     "grams": 100
+    }
+   ],
+   "checks": [
+    {
+     "src": "SR",
+     "code": "175120",
+     "name": "Fish, mackerel, Atlantic, cooked, dry heat",
+     "kcal": 262.0,
+     "diff_pct": 3.6
+    }
+   ],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-106",
+   "zh": "烤鲭鱼",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 264,
+   "ProteinPer100G": 25.2,
+   "CarbohydratePer100G": 0.4,
+   "FatPer100G": 22.4,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "10156",
+     "name": "＜魚類＞ （さば類） まさば 焼き",
+     "grams": 100
+    }
+   ],
+   "checks": [
+    {
+     "src": "SR",
+     "code": "175120",
+     "name": "Fish, mackerel, Atlantic, cooked, dry heat",
+     "kcal": 262.0,
+     "diff_pct": -0.8
+    }
+   ],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-110",
+   "zh": "烤鳟鱼",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 168,
+   "ProteinPer100G": 23.8,
+   "CarbohydratePer100G": 0.0,
+   "FatPer100G": 7.4,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "173718",
+     "name": "Fish, trout, rainbow, farmed, cooked, dry heat",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-112",
+   "zh": "烤鲶鱼",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 144,
+   "ProteinPer100G": 18.4,
+   "CarbohydratePer100G": 0.0,
+   "FatPer100G": 7.2,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "175166",
+     "name": "Fish, catfish, channel, farmed, cooked, dry heat",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-118",
+   "zh": "烤鳗鱼",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 285,
+   "ProteinPer100G": 23.0,
+   "CarbohydratePer100G": 3.1,
+   "FatPer100G": 21.0,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "10070",
+     "name": "＜魚類＞ うなぎ かば焼",
+     "grams": 100
+    }
+   ],
+   "checks": [
+    {
+     "src": "SR",
+     "code": "174194",
+     "name": "Fish, eel, mixed species, cooked, dry heat",
+     "kcal": 236.0,
+     "diff_pct": -17.2
+    }
+   ],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-120",
+   "zh": "烤大虾",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 97,
+   "ProteinPer100G": 23.5,
+   "CarbohydratePer100G": 0.0,
+   "FatPer100G": 0.4,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "10323",
+     "name": "＜えび・かに類＞ （えび類） くるまえび 養殖 焼き",
+     "grams": 100
+    }
+   ],
+   "checks": [
+    {
+     "src": "SR",
+     "code": "175180",
+     "name": "Crustaceans, shrimp, cooked",
+     "kcal": 99.0,
+     "diff_pct": 2.1
+    }
+   ],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-123",
+   "zh": "水煮龙虾",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 89,
+   "ProteinPer100G": 19.0,
+   "CarbohydratePer100G": 0.0,
+   "FatPer100G": 0.9,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "174209",
+     "name": "Crustaceans, lobster, northern, cooked, moist heat",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-126",
+   "zh": "烤鱿鱼",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 108,
+   "ProteinPer100G": 23.6,
+   "CarbohydratePer100G": 0.1,
+   "FatPer100G": 1.0,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "10347",
+     "name": "＜いか・たこ類＞ （いか類） するめいか 焼き",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-127",
+   "zh": "水煮章鱼",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 91,
+   "ProteinPer100G": 21.7,
+   "CarbohydratePer100G": 0.1,
+   "FatPer100G": 0.7,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "10362",
+     "name": "＜いか・たこ類＞ （たこ類） まだこ ゆで",
+     "grams": 100
+    }
+   ],
+   "checks": [
+    {
+     "src": "SR",
+     "code": "174249",
+     "name": "Mollusks, octopus, common, cooked, moist heat",
+     "kcal": 164.0,
+     "diff_pct": 80.2
+    }
+   ],
+   "chinaTablesLater": false,
+   "review": "美国数据是久煮失水后的值；国内白灼章鱼更接近日本表"
+  },
+  {
+   "id": "v24-129",
+   "zh": "水煮扇贝",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 111,
+   "ProteinPer100G": 20.5,
+   "CarbohydratePer100G": 5.4,
+   "FatPer100G": 0.8,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "167742",
+     "name": "Mollusks, scallop, (bay and sea), cooked, steamed",
+     "grams": 100
+    }
+   ],
+   "checks": [
+    {
+     "src": "MEXT",
+     "code": "10312",
+     "name": "＜貝類＞ ほたてがい 水煮",
+     "kcal": 89.0,
+     "diff_pct": -19.8
+    }
+   ],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-130",
+   "zh": "烤扇贝",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 123,
+   "ProteinPer100G": 23.8,
+   "CarbohydratePer100G": 4.6,
+   "FatPer100G": 0.3,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "10414",
+     "name": "＜貝類＞ ほたてがい 貝柱 焼き",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-132",
+   "zh": "烤青口贝",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 172,
+   "ProteinPer100G": 23.8,
+   "CarbohydratePer100G": 7.4,
+   "FatPer100G": 4.5,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "174217",
+     "name": "Mollusks, mussel, blue, cooked, moist heat",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-134",
+   "zh": "烤蛤蜊",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 32,
+   "ProteinPer100G": 4.9,
+   "CarbohydratePer100G": 0.4,
+   "FatPer100G": 0.8,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "10466",
+     "name": "＜貝類＞ あさり 蒸し",
+     "grams": 100
+    }
+   ],
+   "checks": [
+    {
+     "src": "SR",
+     "code": "171975",
+     "name": "Mollusks, clam, mixed species, cooked, moist heat",
+     "kcal": 148.0,
+     "diff_pct": 362.5
+    }
+   ],
+   "chinaTablesLater": false,
+   "review": "国内花甲就是日本表的“あさり”；美国蛤蜊品种不同，不用"
+  },
+  {
+   "id": "v24-151",
+   "zh": "原味核桃",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 654,
+   "ProteinPer100G": 15.2,
+   "CarbohydratePer100G": 13.7,
+   "FatPer100G": 65.2,
+   "FiberPer100G": 6.7,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "170187",
+     "name": "Nuts, walnuts, english",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-153",
+   "zh": "原味腰果",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 553,
+   "ProteinPer100G": 18.2,
+   "CarbohydratePer100G": 30.2,
+   "FatPer100G": 43.9,
+   "FiberPer100G": 3.3,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "170162",
+     "name": "Nuts, cashew nuts, raw",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-161",
+   "zh": "原味榛子",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 628,
+   "ProteinPer100G": 14.9,
+   "CarbohydratePer100G": 16.7,
+   "FatPer100G": 60.8,
+   "FiberPer100G": 9.7,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "170581",
+     "name": "Nuts, hazelnuts or filberts",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-162",
+   "zh": "烘烤榛子",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 646,
+   "ProteinPer100G": 15.0,
+   "CarbohydratePer100G": 17.6,
+   "FatPer100G": 62.4,
+   "FiberPer100G": 9.4,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "170583",
+     "name": "Nuts, hazelnuts or filberts, dry roasted, without salt added",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-163",
+   "zh": "原味花生",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 567,
+   "ProteinPer100G": 25.8,
+   "CarbohydratePer100G": 16.1,
+   "FatPer100G": 49.2,
+   "FiberPer100G": 8.5,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "172430",
+     "name": "Peanuts, all types, raw",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-168",
+   "zh": "烘烤南瓜籽",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 574,
+   "ProteinPer100G": 29.8,
+   "CarbohydratePer100G": 14.7,
+   "FatPer100G": 49.0,
+   "FiberPer100G": 6.5,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "170557",
+     "name": "Seeds, pumpkin and squash seed kernels, roasted, without salt",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-177",
+   "zh": "鲜牛油果",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 160,
+   "ProteinPer100G": 2.0,
+   "CarbohydratePer100G": 8.5,
+   "FatPer100G": 14.7,
+   "FiberPer100G": 6.7,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "171705",
+     "name": "Avocados, raw, all commercial varieties",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-181",
+   "zh": "鲜菠菜",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 23,
+   "ProteinPer100G": 2.9,
+   "CarbohydratePer100G": 3.6,
+   "FatPer100G": 0.4,
+   "FiberPer100G": 2.2,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "168462",
+     "name": "Spinach, raw",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-182",
+   "zh": "白灼菠菜",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 23,
+   "ProteinPer100G": 3.0,
+   "CarbohydratePer100G": 3.8,
+   "FatPer100G": 0.3,
+   "FiberPer100G": 2.4,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "168463",
+     "name": "Spinach, cooked, boiled, drained, without salt",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-185",
+   "zh": "鲜生菜",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 15,
+   "ProteinPer100G": 1.4,
+   "CarbohydratePer100G": 2.9,
+   "FatPer100G": 0.1,
+   "FiberPer100G": 1.3,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "169249",
+     "name": "Lettuce, green leaf, raw",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-186",
+   "zh": "白灼生菜",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 15,
+   "ProteinPer100G": 1.4,
+   "CarbohydratePer100G": 2.9,
+   "FatPer100G": 0.1,
+   "FiberPer100G": 1.3,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "169249",
+     "name": "Lettuce, green leaf, raw",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-188",
+   "zh": "清蒸卷心菜",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 19,
+   "ProteinPer100G": 0.9,
+   "CarbohydratePer100G": 4.6,
+   "FatPer100G": 0.2,
+   "FiberPer100G": 2.0,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "06062",
+     "name": "（キャベツ類） キャベツ 結球葉 ゆで",
+     "grams": 100
+    }
+   ],
+   "checks": [
+    {
+     "src": "SR",
+     "code": "169976",
+     "name": "Cabbage, cooked, boiled, drained, without salt",
+     "kcal": 23.0,
+     "diff_pct": 21.1
+    }
+   ],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-192",
+   "zh": "清蒸花椰菜",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 23,
+   "ProteinPer100G": 1.8,
+   "CarbohydratePer100G": 4.1,
+   "FatPer100G": 0.5,
+   "FiberPer100G": 2.3,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "170397",
+     "name": "Cauliflower, cooked, boiled, drained, without salt",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-193",
+   "zh": "白灼芦笋",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 22,
+   "ProteinPer100G": 2.4,
+   "CarbohydratePer100G": 4.1,
+   "FatPer100G": 0.2,
+   "FiberPer100G": 2.0,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "168390",
+     "name": "Asparagus, cooked, boiled, drained",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-195",
+   "zh": "鲜芹菜",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 14,
+   "ProteinPer100G": 0.7,
+   "CarbohydratePer100G": 3.0,
+   "FatPer100G": 0.2,
+   "FiberPer100G": 1.6,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "169988",
+     "name": "Celery, raw",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-209",
+   "zh": "水煮四季豆",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 35,
+   "ProteinPer100G": 1.9,
+   "CarbohydratePer100G": 7.9,
+   "FatPer100G": 0.3,
+   "FiberPer100G": 3.2,
+   "sources": [
+    {
+     "src": "SR",
+     "code": "169141",
+     "name": "Beans, snap, green, cooked, boiled, drained, without salt",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-245",
+   "zh": "凉拌海带",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 48,
+   "ProteinPer100G": 1.4,
+   "CarbohydratePer100G": 11.2,
+   "FatPer100G": 2.3,
+   "FiberPer100G": 8.1,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "09056",
+     "name": "（こんぶ類） まこんぶ 素干し 水煮",
+     "label": "海带",
+     "grams": 93
+    },
+    {
+     "src": "SR",
+     "code": "171016",
+     "name": "Oil, sesame, salad or cooking",
+     "label": "香油",
+     "grams": 2
+    },
+    {
+     "src": "MEXT",
+     "code": "17007",
+     "name": "＜調味料類＞ （しょうゆ類） こいくちしょうゆ",
+     "label": "酱油",
+     "grams": 5
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "v24-246",
+   "zh": "水煮海带",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 28,
+   "ProteinPer100G": 1.1,
+   "CarbohydratePer100G": 11.6,
+   "FatPer100G": 0.3,
+   "FiberPer100G": 8.7,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "09056",
+     "name": "（こんぶ類） まこんぶ 素干し 水煮",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "od-001",
+   "zh": "关东煮鱼丸",
+   "status": "ready",
+   "grade": "C",
+   "kcal": 104,
+   "ProteinPer100G": 12.0,
+   "CarbohydratePer100G": 6.5,
+   "FatPer100G": 4.3,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "10383",
+     "name": "＜水産練り製品＞ つみれ",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "od-007",
+   "zh": "关东煮蟹味棒",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 89,
+   "ProteinPer100G": 12.1,
+   "CarbohydratePer100G": 9.2,
+   "FatPer100G": 0.5,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "10376",
+     "name": "＜水産練り製品＞ かに風味かまぼこ",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "od-008",
+   "zh": "关东煮竹轮",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 107,
+   "ProteinPer100G": 13.2,
+   "CarbohydratePer100G": 13.3,
+   "FatPer100G": 0.4,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "10381",
+     "name": "＜水産練り製品＞ 焼き竹輪",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "od-009",
+   "zh": "关东煮甜不辣",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 116,
+   "ProteinPer100G": 11.3,
+   "CarbohydratePer100G": 12.6,
+   "FatPer100G": 2.4,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "10386",
+     "name": "＜水産練り製品＞ さつま揚げ",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "od-010",
+   "zh": "关东煮鱼糕",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 93,
+   "ProteinPer100G": 12.0,
+   "CarbohydratePer100G": 9.7,
+   "FatPer100G": 0.9,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "10379",
+     "name": "＜水産練り製品＞ 蒸しかまぼこ",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "od-012",
+   "zh": "关东煮油扬豆腐",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 266,
+   "ProteinPer100G": 18.2,
+   "CarbohydratePer100G": 0.0,
+   "FatPer100G": 23.4,
+   "FiberPer100G": 0.9,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "04084",
+     "name": "だいず ［豆腐・油揚げ類］ 油揚げ 油抜き 生",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "od-014",
+   "zh": "关东煮冻豆腐",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 104,
+   "ProteinPer100G": 10.7,
+   "CarbohydratePer100G": 1.1,
+   "FatPer100G": 7.3,
+   "FiberPer100G": 0.5,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "04087",
+     "name": "だいず ［豆腐・油揚げ類］ 凍り豆腐 水煮",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "od-015",
+   "zh": "关东煮腐竹",
+   "status": "ready",
+   "grade": "B",
+   "kcal": 151,
+   "ProteinPer100G": 15.7,
+   "CarbohydratePer100G": 0.1,
+   "FatPer100G": 10.6,
+   "FiberPer100G": 1.2,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "04091",
+     "name": "だいず ［その他］ 湯葉 干し 湯戻し",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "od-016",
+   "zh": "关东煮香菇",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 22,
+   "ProteinPer100G": 2.5,
+   "CarbohydratePer100G": 5.1,
+   "FatPer100G": 0.4,
+   "FiberPer100G": 4.4,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "08040",
+     "name": "しいたけ 生しいたけ 菌床栽培 ゆで",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "od-017",
+   "zh": "关东煮金针菇",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 34,
+   "ProteinPer100G": 2.8,
+   "CarbohydratePer100G": 7.8,
+   "FatPer100G": 0.1,
+   "FiberPer100G": 4.5,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "08002",
+     "name": "えのきたけ ゆで",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "od-018",
+   "zh": "关东煮娃娃菜",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 13,
+   "ProteinPer100G": 0.9,
+   "CarbohydratePer100G": 2.9,
+   "FatPer100G": 0.1,
+   "FiberPer100G": 1.4,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "06234",
+     "name": "はくさい 結球葉 ゆで",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "od-019",
+   "zh": "关东煮玉米",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 95,
+   "ProteinPer100G": 3.5,
+   "CarbohydratePer100G": 18.6,
+   "FatPer100G": 1.7,
+   "FiberPer100G": 3.1,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "06176",
+     "name": "（とうもろこし類） スイートコーン 未熟種子 ゆで",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "od-020",
+   "zh": "关东煮土豆",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 71,
+   "ProteinPer100G": 1.7,
+   "CarbohydratePer100G": 16.9,
+   "FatPer100G": 0.1,
+   "FiberPer100G": 3.1,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "02019",
+     "name": "＜いも類＞ じゃがいも 塊茎 皮なし 水煮",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "od-021",
+   "zh": "关东煮莲藕",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 66,
+   "ProteinPer100G": 1.3,
+   "CarbohydratePer100G": 16.1,
+   "FatPer100G": 0.1,
+   "FiberPer100G": 2.3,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "06318",
+     "name": "れんこん 根茎 ゆで",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "od-022",
+   "zh": "关东煮竹笋",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 22,
+   "ProteinPer100G": 2.7,
+   "CarbohydratePer100G": 4.0,
+   "FatPer100G": 0.2,
+   "FiberPer100G": 2.3,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "06151",
+     "name": "たけのこ 水煮缶詰",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "od-023",
+   "zh": "关东煮魔芋丝",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 7,
+   "ProteinPer100G": 0.2,
+   "CarbohydratePer100G": 3.0,
+   "FatPer100G": 0.0,
+   "FiberPer100G": 2.9,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "02005",
+     "name": "＜いも類＞ こんにゃく しらたき",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "od-025",
+   "zh": "关东煮香肠",
+   "status": "ready",
+   "grade": "C",
+   "kcal": 328,
+   "ProteinPer100G": 12.1,
+   "CarbohydratePer100G": 1.4,
+   "FatPer100G": 32.0,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "11306",
+     "name": "＜畜肉類＞ ぶた ［ソーセージ類］ ウインナーソーセージ ゆで",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "od-026",
+   "zh": "关东煮鱼肉肠",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 158,
+   "ProteinPer100G": 11.5,
+   "CarbohydratePer100G": 12.6,
+   "FatPer100G": 7.2,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "10388",
+     "name": "＜水産練り製品＞ 魚肉ソーセージ",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "od-027",
+   "zh": "关东煮牛筋",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 157,
+   "ProteinPer100G": 31.0,
+   "CarbohydratePer100G": 0.0,
+   "FatPer100G": 5.1,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "11101",
+     "name": "＜畜肉類＞ うし ［副生物］ 腱 ゆで",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "od-028",
+   "zh": "关东煮鹌鹑蛋",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 162,
+   "ProteinPer100G": 11.0,
+   "CarbohydratePer100G": 0.6,
+   "FatPer100G": 14.1,
+   "FiberPer100G": 0.0,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "12003",
+     "name": "うずら卵 水煮缶詰",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  },
+  {
+   "id": "od-029",
+   "zh": "关东煮乌冬面",
+   "status": "ready",
+   "grade": "A",
+   "kcal": 95,
+   "ProteinPer100G": 2.6,
+   "CarbohydratePer100G": 21.6,
+   "FatPer100G": 0.4,
+   "FiberPer100G": 1.3,
+   "sources": [
+    {
+     "src": "MEXT",
+     "code": "01039",
+     "name": "こむぎ ［うどん・そうめん類］ うどん ゆで",
+     "grams": 100
+    }
+   ],
+   "checks": [],
+   "chinaTablesLater": false,
+   "review": ""
+  }
+ ]
+}

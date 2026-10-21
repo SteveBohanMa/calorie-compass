@@ -69,7 +69,7 @@ def create_intro(images: dict[str, Image.Image]) -> None:
     x = 118
     y = 518
     for label, fill_color in [
-        ("128 条离线食物记录", "#DDF5CF"),
+        ("50 条离线食物记录", "#DDF5CF"),
         ("训练消耗区间", "#D8F1F6"),
         ("周计划与周报", "#E0F5ED"),
         ("中英文界面", "#F6EBD8"),

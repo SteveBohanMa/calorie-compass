@@ -7,6 +7,7 @@ import {
   useState,
   type PropsWithChildren,
 } from "react";
+import { STORAGE_KEYS } from "./userData";
 
 export type MealSlot = "breakfast" | "lunch" | "dinner" | "snack";
 
@@ -49,7 +50,7 @@ export type WeekPlan = {
   updatedAt: string;
 };
 
-type PlannerState = {
+export type PlannerState = {
   version: 1;
   weeks: Record<string, WeekPlan>;
 };
@@ -57,9 +58,11 @@ type PlannerState = {
 type PlannerContextValue = {
   getWeek: (weekStart: string) => WeekPlan;
   updateDay: (weekStart: string, date: string, updater: (day: DayPlan) => DayPlan) => void;
+  /** Re-reads the plan from storage, e.g. after a backup was imported. */
+  reloadFromStorage: () => void;
 };
 
-const STORAGE_KEY = "calorie-compass-v2.4-planner";
+const STORAGE_KEY = STORAGE_KEYS.planner;
 const PlannerContext = createContext<PlannerContextValue | null>(null);
 
 function dateFromKey(key: string) {
@@ -132,7 +135,9 @@ export function PlannerProvider({ children }: PropsWithChildren) {
     });
   }, []);
 
-  const value = useMemo(() => ({ getWeek, updateDay }), [getWeek, updateDay]);
+  const reloadFromStorage = useCallback(() => setState(loadState()), []);
+
+  const value = useMemo(() => ({ getWeek, updateDay, reloadFromStorage }), [getWeek, updateDay, reloadFromStorage]);
   return <PlannerContext.Provider value={value}>{children}</PlannerContext.Provider>;
 }
 

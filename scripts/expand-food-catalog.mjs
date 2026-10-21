@@ -370,4 +370,12 @@ async function main() {
   console.log(`Complete: ${records.length} foods, ${attributions.length} images, ${missing.length} missing images.`);
 }
 
+// Retired in v2.6. When the USDA requests failed (as they did for every record in v2.4), this
+// script silently wrote category defaults (155/130/520/35 kcal plus template nutrients) into
+// src/foods.json as if they were data. Those 78 records are now flagged "placeholder" and hidden.
+// A replacement import must fail loudly instead of falling back. The code is kept for reference.
+if (process.env.ALLOW_RETIRED_CATALOG_SCRIPT !== "1") {
+  console.error("scripts/expand-food-catalog.mjs is retired: it writes placeholder calories when lookups fail. See AGENTS.md.");
+  process.exit(1);
+}
 await main();

@@ -7,7 +7,7 @@
 **离线饮食查询、训练消耗估算与每周计划工具**  
 把每一口和每一次训练，记录得更清楚。
 
-[![version](https://img.shields.io/badge/version-v2.5-238966?style=flat-square)](package.json)
+[![version](https://img.shields.io/badge/version-v2.7-238966?style=flat-square)](package.json)
 [![React](https://img.shields.io/badge/React-19-149ECA?style=flat-square&logo=react&logoColor=white)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-7-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Electron](https://img.shields.io/badge/Electron-43-47848F?style=flat-square&logo=electron&logoColor=white)](https://www.electronjs.org/)
@@ -25,11 +25,13 @@
 ## ⚠️ 营养数据免责声明
 
 > [!WARNING]
-> 当前内置的食物热量、营养成分、份量以及训练消耗数据主要用于软件功能演示，其中包含通用参考值、配方估算值和低置信度记录，**尚未全部通过权威数据源逐条校准**。数据可能不准确、不完整，也可能不适用于特定品牌、烹饪方式或个人情况。
+> 内置的食物热量和营养成分来自 USDA FoodData Central 与日本食品标准成分表（八订）增补2023，其中一部分是按相近做法或简单配方推算的估算值（每条都标有可信等级 A/B/C）；份量和训练消耗也是估算。同一种食物的品种、做法和品牌不同，实际数值会有出入；具体产品请以包装标签为准。
 >
 > **请勿将本项目中的数据用于医疗诊断、疾病管理、专业营养方案、精确减重决策或其他需要高准确度的用途。** 实际饮食与训练决策应以食品标签、可信数据库以及医生或注册营养专业人士的建议为准。
 
-当前公开版本为 **v2.5**，定位是以软件功能、交互实现和本地优先体验为主的开源小项目。后续版本将逐步使用可信来源重新核对和替换内置营养数据。
+当前版本为 **v2.7**。
+
+v2.6 起遵循“不显示比显示错的好”。v2.7 完成第一批数据重建：目录里的 123 种食物全部换成可追溯的来源数据，并补回蛋白质、碳水、脂肪和纤维；关东煮扩充到 27 种。来源和核对方法见 [数据来源](#data-sources)。
 
 ---
 
@@ -91,9 +93,9 @@
 | 功能 | 说明 |
 | --- | --- |
 | 🔍 热量快查 | 按烹饪方式、便利店食品和营养来源浏览离线食物目录 |
-| 🥗 营养详情 | 同时查看每 100 克与常见一份的热量、蛋白质、碳水、脂肪和纤维 |
+| 🥗 营养详情 | 每 100 克与常见一份的热量、千焦、蛋白质、碳水、脂肪、纤维，以及来源、可信等级和注意事项 |
 | ⚖️ 热量对比 | 将目录食物与自定义菜品统一到每 100 克进行可视化比较 |
-| 📝 我的数据 | 添加、编辑和删除自定义菜品，数据仅保存在当前设备 |
+| 📝 我的数据 | 添加、编辑和删除自定义菜品，并可导出 / 导入数据备份 |
 | 🏋️ 训练估算 | 根据动作、体重、组数、次数、负重、时长、休息、RPE 与心率估算消耗区间 |
 | 📅 每周计划 | 按天编辑饮食与训练计划，分别汇总摄入和训练消耗 |
 | 📊 周报导出 | 生成包含七天计划和汇总数据的 PNG 周报 |
@@ -107,7 +109,7 @@
 
 - **离线可用**：核心食物目录、图片和计算逻辑随软件一起打包。
 - **饮食与训练分开记录**：不使用“运动抵消饮食”的表达，也不自动计算热量缺口。
-- **本地数据**：自定义菜品、对比选择和周计划保存在本机浏览器存储中。
+- **本地数据**：自定义菜品、对比选择和周计划保存在本机，重启和升级后保留，也可以导出成备份文件。
 - **桌面便携版**：Electron 构建的 Windows x64 便携应用，无需安装。
 - **可继续扩展**：React + TypeScript 代码结构，便于继续补充数据来源和功能。
 
@@ -145,16 +147,16 @@ npm run desktop:run
 npm run desktop:dist
 ```
 
-构建产物将生成在 `release-v2.5/`。该目录不会提交到 Git 仓库，可执行文件应通过 GitHub Releases 发布。更多说明见 [README-EXE.md](README-EXE.md)。
+构建产物将生成在 `release-v2.7/`。该目录不会提交到 Git 仓库，可执行文件应通过 GitHub Releases 发布。更多说明见 [README-EXE.md](README-EXE.md)。
 
 ## ✅ 检查与测试
 
 ```bash
-npm run check:runtime
-npm run test:v25-data
-npm run test:sites
-npm run test:runtime
+npm test               # 运行时完整性、数据校验、Sites 与 Playwright 页面测试
+npm run test:desktop   # 构建后启动 Electron：重启后数据保留、协议安全、启动无报错
 ```
+
+也可以单独运行 `npm run check:runtime`、`npm run test:data`、`npm run test:sites`、`npm run test:runtime`。
 
 首次运行 Playwright 测试前，需要安装对应浏览器：
 
@@ -176,30 +178,49 @@ python scripts/generate-readme-assets.py
 desktop/       Electron 主进程与预加载脚本
 docs/readme/   README 的 Intro、Demo 与功能截图
 public/        随应用打包的本地图片和静态资源
-scripts/       数据、资源、构建与 README 素材脚本
+data-sources/  营养数据源清单、来源核对表与待补清单（原始文件不进 Git）
+scripts/       数据、资源、构建与 README 素材脚本（营养数据流水线在 scripts/nutrition/）
 src/           React 应用、目录数据与业务逻辑
 tests/         Playwright 与 Sites 测试
 worker/        静态站点路由 Worker
 ```
 
-## 🗺️ 数据修复计划
+<a id="data-sources"></a>
 
-目前的数据校验主要保证记录结构、字段范围和本地资源完整性，**并不代表营养数值已经获得权威验证**。后续数据更新计划包括：
+## 🗺️ 数据来源
 
-1. 确定允许再分发的可信营养数据库。
-2. 为每条记录保留来源、来源 ID、更新时间和可信等级。
-3. 对热量与三大营养素进行一致性检查。
-4. 将估算数据和权威来源数据明确区分。
+| 来源 | 用途 | 许可 |
+| --- | --- | --- |
+| [USDA FoodData Central](https://fdc.nal.usda.gov/)（SR Legacy、Foundation Foods） | 肉蛋鱼虾、主食、蔬果、坚果，以及同一食材的不同做法 | 公共领域（CC0） |
+| [日本食品標準成分表（八訂）増補2023年](https://www.mext.go.jp/a_menu/syokuhinseibun/index.htm) | 关东煮食材，以及日本表有实测熟制值的条目 | 文部科学省允许自由使用，需注明出处 |
+
+每条记录都写明来源数据库和条目编号（FDC ID 或食品番号）。可信等级：
+
+- **A**：来源里直接有这种做法的熟制值；
+- **B**：用相近做法近似，或用已核实的食材按简单配方推算；
+- **C**：各家产品差别大（便利店饭团、便当、鱼糜制品等），只给典型值，以包装为准。
+
+数据由脚本生成，不手抄数字：
+
+```bash
+fetch-nutrition-sources.cmd                    # Windows 双击，或 node scripts/fetch-nutrition-sources.mjs
+python scripts/nutrition/build_catalog.py      # 按 scripts/nutrition/catalog_spec.py 生成 src/foods.json
+npm run test:data                              # 结构、来源、营养素与热量一致性检查
+```
+
+`data-sources/source-values.json` 记录每个数值对应的来源条目和交叉核对结果；`data-sources/pending.csv` 是还在等数据的食物（等中国食物成分表，或等包装标签）。等数据的记录标记为 `"DataStatus": "pending"`，不会在应用中显示。
 
 欢迎针对软件功能、界面、可访问性和工程实现提交 Issue 或 Pull Request。涉及营养数据的修改，请同时提供可核查的数据来源。
 
 ## 🔒 隐私
 
-应用不要求注册账号。自定义菜品、对比选择和周计划保存在用户本机，项目本身不提供云端同步服务。
+应用不要求注册账号。自定义菜品、对比选择和周计划保存在用户本机，项目本身不提供云端同步服务；需要换电脑时，可在“我的数据”中导出备份文件再导入。
 
 ## 📄 许可
 
-项目代码采用 [MIT License](LICENSE)。仓库中的第三方字体、图标和图片仍分别受其原始许可约束；已有食物图片来源记录位于 `public/assets/food/ATTRIBUTION*.md`。
+项目代码采用 [MIT License](LICENSE)。仓库中的第三方字体、图标和图片仍分别受其原始许可约束；食物图片来源记录位于 `public/assets/food/ATTRIBUTION*.md`，新增关东煮条目的图标来自 Noto Emoji（Apache License 2.0）。
+
+营养数据：USDA FoodData Central（公共领域）；日本食品標準成分表（八訂）増補2023年から引用（文部科学省）。
 
 ---
 

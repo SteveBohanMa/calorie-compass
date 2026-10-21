@@ -19,10 +19,11 @@ export type Food = {
   kcal: number;
   servingGrams: number;
   servingKcal: number;
-  protein: number;
-  carbohydrate: number;
-  fat: number;
-  fiber: number;
+  /** Grams per 100 g. null = not verified yet; never show an estimate in its place. */
+  protein: number | null;
+  carbohydrate: number | null;
+  fat: number | null;
+  fiber: number | null;
   isFatLossPopular: boolean;
   popularityRank: number;
   grade: string;
@@ -30,6 +31,9 @@ export type Food = {
   includesSauce: boolean;
   sourceZh: string;
   sourceEn: string;
+  /** Caveat shown on the detail page, e.g. "edible part" or "check the package label". */
+  noteZh: string;
+  noteEn: string;
 };
 
 type RawFood = {
@@ -54,9 +58,20 @@ type RawFood = {
   PopularityRank?: number;
   IncludesBroth: boolean;
   IncludesSauce: boolean;
+  /** A: the source has this exact cooking method. B: similar method or a simple recipe. C: varies by brand; check the label. */
   ConfidenceGrade: string;
   Source: string;
+  NoteZh?: string;
+  NoteEn?: string;
+  /**
+   * "placeholder": the numbers are category defaults, not data.
+   * "pending": waiting for a source (China Food Composition Tables or package labels).
+   * Records with either status are never shown.
+   */
+  DataStatus?: string;
 };
+
+const HIDDEN_STATUSES = new Set(["placeholder", "pending"]);
 
 function inferPrimaryNutrient(food: RawFood): PrimaryNutrient {
   if (food.PrimaryNutrient) return food.PrimaryNutrient;
@@ -68,6 +83,7 @@ function inferPrimaryNutrient(food: RawFood): PrimaryNutrient {
 }
 
 export const FOODS: Food[] = (rawFoods as RawFood[])
+  .filter((food) => !HIDDEN_STATUSES.has(food.DataStatus ?? ""))
   .map((food, index) => {
     const [sourceZh, ...sourceEn] = food.Source.split(" / ");
     return {
@@ -87,10 +103,10 @@ export const FOODS: Food[] = (rawFoods as RawFood[])
       kcal: food.KcalPer100G,
       servingGrams: food.ServingWeightG,
       servingKcal: food.KcalPerServing,
-      protein: food.ProteinPer100G ?? 0,
-      carbohydrate: food.CarbohydratePer100G ?? 0,
-      fat: food.FatPer100G ?? 0,
-      fiber: food.FiberPer100G ?? 0,
+      protein: food.ProteinPer100G ?? null,
+      carbohydrate: food.CarbohydratePer100G ?? null,
+      fat: food.FatPer100G ?? null,
+      fiber: food.FiberPer100G ?? null,
       isFatLossPopular: food.FatLossPopular ?? false,
       popularityRank: food.PopularityRank ?? 10_000 + index,
       grade: food.ConfidenceGrade,
@@ -98,9 +114,15 @@ export const FOODS: Food[] = (rawFoods as RawFood[])
       includesSauce: food.IncludesSauce,
       sourceZh,
       sourceEn: sourceEn.join(" / ") || sourceZh,
+      noteZh: food.NoteZh ?? "",
+      noteEn: food.NoteEn ?? food.NoteZh ?? "",
     };
   })
   .sort((a, b) => Number(b.isFatLossPopular) - Number(a.isFatLossPopular) || a.popularityRank - b.popularityRank);
+
+export function hasVerifiedNutrients(food: Food) {
+  return food.protein !== null && food.carbohydrate !== null && food.fat !== null && food.fiber !== null;
+}
 
 export function localizedLabel(item: { zh: string; en: string }, lang: Lang) {
   return lang === "zh" ? item.zh : item.en;
