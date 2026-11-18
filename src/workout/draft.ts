@@ -205,3 +205,19 @@ export function recomputeEntry(entry: WorkoutEntry, exercise: Exercise, profile:
   const estimate = estimateWorkout(exercise, draftToInput(draft), { ...profile, weightKg: entry.bodyWeight });
   return { ...entry, ...entryFromDraft(entry.id, exercise, draft, entry.bodyWeight, estimate, entry.completed) };
 }
+
+/**
+ * Keeps where an entry's heart rate came from (v2.10) in step with an edit: an unchanged heart rate keeps
+ * its source, a changed one was typed by the user, and without a heart rate there is no source.
+ */
+export function withHeartRateSource(previous: WorkoutEntry, next: WorkoutEntry): WorkoutEntry {
+  if (next.avgHr === previous.avgHr) return next;
+  const { hrSource: _source, hrFrom: _from, hrTo: _to, ...rest } = next;
+  return next.avgHr === null ? rest : { ...rest, hrSource: "manual" };
+}
+
+/** Ticks an entry done or not; the time it was ticked is what write-back uses when it was not recorded live (v2.10). */
+export function withCompletion<T extends { completed: boolean; completedAt?: string }>(entry: T, completed: boolean, now = new Date()): T {
+  const { completedAt: _completedAt, ...rest } = entry;
+  return (completed ? { ...rest, completed, completedAt: now.toISOString() } : { ...rest, completed }) as T;
+}

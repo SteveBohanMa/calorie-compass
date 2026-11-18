@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type FormEvent, type ReactElement } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent, type ReactElement } from "react";
 import {
   CheckIcon,
   ChevronDownIcon,
@@ -28,6 +28,13 @@ import {
 import { INPUT_LIMITS, estimateWorkout, headlineRange, levelForRpe, restingKcalPerMinute, type BodyProfile, type EstimateNote, type Range, type Sex, type WorkoutEstimate } from "./model";
 import { PROFILE_LIMITS, ageFromBirthYear, birthYearFromAge, type StoredProfile } from "./profile";
 import { useProfile } from "./ProfileContext";
+import { useNativeBackOverlay } from "../native/NativeBack";
+import { APP_RESUMED_EVENT } from "../native/bridge";
+import { toHealthError } from "../health/api";
+import { heartRateFields, readsHeartRate, type HeartRateReading } from "../health/core";
+import { HEALTH_COPY } from "../health/copy";
+import { useHealth } from "../health/HealthContext";
+import { HeartRateAssist, WeightOffer, type HeartRatePhase } from "../health/HealthViews";
 import "./workout.css";
 
 const DEFAULT_EXERCISE_ID = "deadlift";
@@ -519,6 +526,9 @@ export function WorkoutScreen({ lang }: { lang: Lang }) {
   const [pickerOpen, setPickerOpen] = useState(false);
   const [status, setStatus] = useState("");
   const [showBasis, setShowBasis] = useState(false);
+  const pageRef = useRef<HTMLElement>(null);
+  // Android: the back button closes the exercise list before it leaves the screen.
+  useNativeBackOverlay(pickerOpen, () => setPickerOpen(false), pageRef);
 
   const problems = useMemo(() => draftProblems(exercise, draft), [exercise, draft]);
   const fresh = useMemo(() => (body && !problems.length ? estimateWorkout(exercise, draftToInput(draft), body) : null), [exercise, draft, body, problems]);
@@ -529,15 +539,84 @@ export function WorkoutScreen({ lang }: { lang: Lang }) {
   }, [fresh]);
   const shown = fresh ?? (lastValid && lastValid.exerciseId === exercise.id ? lastValid : null);
 
+  // ---- Heart rate from Health Connect (Android 14+; strength exercises and resistance sessions only; v2.10)
+  const health = useHealth();
+  const hrSupported = health.status?.available === true && readsHeartRate(exercise);
+  const hrConnected = health.allowed("heartRate");
+  const readsSessions = health.permissions.exercise === "granted";
+  const [hrPhase, setHrPhase] = useState<HeartRatePhase>("idle");
+  const [hrReading, setHrReading] = useState<HeartRateReading | null>(null);
+  const [hrError, setHrError] = useState("");
+  // Each read gets a number; a reply that arrives after the exercise changed (or a newer read) is dropped.
+  const hrRequest = useRef(0);
+
+  const readHeartRate = useCallback(async () => {
+    const request = ++hrRequest.current;
+    setHrPhase("reading");
+    try {
+      const reading = await health.api.workoutHeartRate({ sessions: readsSessions });
+      if (request !== hrRequest.current) return;
+      setHrReading(reading);
+      if (!reading) {
+        setHrPhase("no-data");
+        return;
+      }
+      setDraft((current) => ({ ...current, hr: String(reading.bpm) }));
+      setHrPhase("filled");
+      setStatus("");
+    } catch (error) {
+      if (request !== hrRequest.current) return;
+      const failure = toHealthError(error);
+      setHrReading(null);
+      setHrError(HEALTH_COPY[lang].errors[failure.code]);
+      setHrPhase(failure.code === "permission" ? "denied" : "error");
+    }
+  }, [health.api, readsSessions, lang]);
+
+  // Reads by itself when a strength exercise is shown, permission is there and no heart rate was typed.
+  useEffect(() => {
+    if (!hrSupported || !hrConnected || draft.hr.trim() !== "") return;
+    void readHeartRate();
+    // Only when the exercise or the connection changes, not on every keystroke.
+  }, [exercise.id, hrSupported, hrConnected]);
+
+  // Back from the band's app (synced) or from Health Connect settings: try again if nothing was found.
+  useEffect(() => {
+    const retry = () => {
+      if (hrSupported && hrConnected && (hrPhase === "no-data" || hrPhase === "error" || hrPhase === "denied")) void readHeartRate();
+    };
+    window.addEventListener(APP_RESUMED_EVENT, retry);
+    return () => window.removeEventListener(APP_RESUMED_EVENT, retry);
+  }, [hrSupported, hrConnected, hrPhase, readHeartRate]);
+
+  const connectHeartRate = async () => {
+    if (!(await health.connect("heartRate"))) {
+      setHrPhase("denied");
+      return;
+    }
+    // With an empty field the read starts by itself once the permission shows (the effect above); a
+    // value typed before connecting is replaced, because connecting asks for the band's value.
+    if (draft.hr.trim() !== "") void readHeartRate();
+  };
+
   const choose = (next: Exercise) => {
     setPickerOpen(false);
     if (next.id === exercise.id) return;
+    hrRequest.current += 1;
+    setHrReading(null);
+    setHrPhase("idle");
     setExercise(next);
     setDraft(draftFor(next));
     setStatus("");
   };
 
   const change = (field: DraftField, value: string) => {
+    if (field === "hr" && !(hrReading && value === String(hrReading.bpm))) {
+      // Typed by the user: it is theirs now, and a pending automatic read must not overwrite it.
+      hrRequest.current += 1;
+      setHrReading(null);
+      setHrPhase(value.trim() ? "manual" : "idle");
+    }
     setDraft((current) => ({ ...current, [field]: value }));
     setStatus("");
   };
@@ -546,15 +625,21 @@ export function WorkoutScreen({ lang }: { lang: Lang }) {
     if (!body || !fresh) return;
     const today = new Date();
     const date = toDateKey(today);
-    const entry = entryFromDraft(createEntryId("workout"), exercise, draft, body.weightKg, fresh);
+    const hrFromHealth = hrReading && draft.hr.trim() === String(hrReading.bpm) ? heartRateFields(hrReading) : null;
+    const entry = {
+      ...entryFromDraft(createEntryId("workout"), exercise, draft, body.weightKg, fresh),
+      recordedAt: today.toISOString(),
+      ...(hrFromHealth ?? (draft.hr.trim() ? { hrSource: "manual" as const } : {})),
+    };
     planner.updateDay(startOfWeekKey(today), date, (day) => ({ ...day, workouts: [...day.workouts, entry] }));
     setStatus(text.added(today.toLocaleDateString(lang === "zh" ? "zh-CN" : "en-US", { month: "short", day: "numeric" })));
   };
 
   return (
     <MobileScroll className="app-screen mint-screen">
-      <main className="page-content detail-pad wk-page">
+      <main className="page-content detail-pad wk-page" ref={pageRef}>
         <div className="page-intro"><h1>{text.title}</h1><p>{text.intro}</p></div>
+        <WeightOffer lang={lang} />
         <ProfileCard lang={lang} />
 
         <section className={`wk-card ${body ? "" : "disabled"}`} inert={!body}>
@@ -569,6 +654,7 @@ export function WorkoutScreen({ lang }: { lang: Lang }) {
           </div>
           {pickerOpen ? <ExercisePicker lang={lang} selectedId={exercise.id} onSelect={choose} /> : null}
           <WorkoutFields key={exercise.id} lang={lang} exercise={exercise} draft={draft} onChange={change} problems={problems} />
+          {hrSupported ? <HeartRateAssist lang={lang} connected={hrConnected} phase={hrPhase} reading={hrReading} error={hrError} onConnect={() => void connectHeartRate()} onRead={() => void readHeartRate()} onOpenSettings={health.openSettings} /> : null}
           {body ? <p className="wk-muted wk-weight-line">{text.bodyWeightFrom(body.weightKg)}</p> : null}
         </section>
 

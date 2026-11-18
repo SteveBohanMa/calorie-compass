@@ -744,7 +744,7 @@ button {
 .daily-edit-card > button strong { color: var(--ink); font-size: 11px; }
 .daily-edit-card > button small { color: var(--muted); font-size: 9px; }
 .export-report-button { margin-top: 12px; }
-.export-status { margin: 7px 0 0; color: var(--mint-700); font-size: 9px; text-align: center; }
+.export-status { margin: 7px 0 0; color: var(--mint-700); font-size: 9px; text-align: center; overflow-wrap: anywhere; }
 .weekly-export-card { margin-bottom: 18px; }
 .report-days { display: grid; gap: 5px; margin-bottom: 14px; }
 .report-days > div { display: grid; grid-template-columns: 42px 1fr auto 1fr auto; gap: 5px; align-items: center; padding: 7px 9px; border-radius: 10px; background: rgba(255,255,255,.07); }
@@ -807,4 +807,24 @@ button {
   .food-row { grid-template-columns: 20px 62px 1fr auto; }
   .food-row > svg { display: none; }
   .food-row img { width: 62px; height: 62px; }
+}
+
+/* Android app (v2.9): src/native/android.ts sets data-native-platform="android" on <html>.
+   Android draws its own status and navigation bars around the app, so the bottom navigation does not
+   need the 34 px the frameless runtime keeps for an iPhone home indicator. */
+html[data-native-platform="android"],
+html[data-native-platform="android"] body {
+  background: var(--mint-50);
+}
+
+html[data-native-platform="android"] * {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html[data-native-platform="android"] .flow-stack {
+  --keyboard-height: 6px !important;
+}
+
+html[data-native-platform="android"] button:active {
+  opacity: 0.78;
 }

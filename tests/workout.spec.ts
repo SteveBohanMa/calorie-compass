@@ -280,7 +280,8 @@ test("retired exercises and entries from a newer version are not recalculated", 
   await readOnly.locator(".check-control").click();
   const stored = await page.evaluate((key) => JSON.parse(localStorage.getItem(key) ?? "{}"), PLANNER_KEY);
   const entries = Object.values(stored.weeks).flatMap((week: any) => week.days.flatMap((day: any) => day.workouts)) as any[];
-  expect(entries.find((entry) => entry.id === "w-newer")).toEqual({ ...newer, completed: true });
+  // Ticking only changes the done state (and stamps when, for Health Connect write-back in v2.10).
+  expect(entries.find((entry) => entry.id === "w-newer")).toEqual({ ...newer, completed: true, completedAt: expect.any(String) });
   expect(entries.find((entry) => entry.id === "w-retired").exerciseId).toBe("retired-machine");
   // Picking a real exercise turns the retired entry into a normal one.
   await retiredCard.locator("select").selectOption("squat");

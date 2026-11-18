@@ -1,0 +1,37 @@
+// Calorie Compass build settings, applied at the end of app/build.gradle.
+// Written by scripts/android/customize-android.mjs from package.json; edit that script, not this file.
+android {
+    defaultConfig {
+        versionCode = 21000
+        versionName = "2.10.0"
+    }
+    lint {
+        // Lint is not part of this project's checks (npm test is); keep release builds independent of it.
+        checkReleaseBuilds = false
+        abortOnError = false
+    }
+}
+
+// Release signing. scripts/android/build-android.ps1 points CALORIE_COMPASS_SIGNING at a UTF-8
+// properties file (storeFile, storePassword, keyAlias, keyPassword) kept outside the repository.
+// Every update must be signed with the same key, or Android refuses to install it over the old app.
+def calorieCompassSigning = System.getenv("CALORIE_COMPASS_SIGNING")
+if (calorieCompassSigning) {
+    def signing = new Properties()
+    new File(calorieCompassSigning).withReader("UTF-8") { signing.load(it) }
+    android {
+        signingConfigs {
+            calorieCompass {
+                storeFile = new File(signing.getProperty("storeFile"))
+                storePassword = signing.getProperty("storePassword")
+                keyAlias = signing.getProperty("keyAlias")
+                keyPassword = signing.getProperty("keyPassword")
+            }
+        }
+        buildTypes {
+            release {
+                signingConfig = signingConfigs.calorieCompass
+            }
+        }
+    }
+}

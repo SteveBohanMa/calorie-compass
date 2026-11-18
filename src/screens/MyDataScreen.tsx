@@ -32,6 +32,8 @@ import { COMPARE_FOODS_KEY, customToCompareFood, readCustomFoods, readStoredList
 import { DesktopInput, ResilientImage, label } from "../app/ui";
 import { useUserPrefs } from "../features/UserPrefsContext";
 import { useProfile } from "../workout/ProfileContext";
+import { useNativeBackOverlay } from "../native/NativeBack";
+import { HealthConnectCard } from "../health/HealthViews";
 
 const BACKUP_ERROR_TEXT: Record<Lang, Record<BackupError | "too-large", string>> = {
   zh: {
@@ -90,6 +92,10 @@ export function MyDataScreen({ lang }: { lang: Lang }) {
     image: CUSTOM_FOOD_IMAGE,
   });
   const [draft, setDraft] = useState<CustomFood>(emptyDraft);
+  const pageRef = useRef<HTMLElement>(null);
+  // Android: the back button closes the dish form or the import question before it leaves the screen.
+  useNativeBackOverlay(formOpen, () => setFormOpen(false), pageRef);
+  useNativeBackOverlay(pendingImport !== null, () => setPendingImport(null), pageRef);
 
   const openNew = () => {
     setDraft(emptyDraft());
@@ -211,7 +217,7 @@ export function MyDataScreen({ lang }: { lang: Lang }) {
 
   return (
     <MobileScroll className="app-screen mint-screen">
-      <main className="page-content detail-pad">
+      <main className="page-content detail-pad" ref={pageRef}>
         <div className="page-intro"><h1>{text.customTitle}</h1><p>{text.customHint}</p></div>
         {formOpen ? <form className="custom-editor" onSubmit={save}>
           <div className="custom-editor-heading"><strong>{editingId ? (lang === "zh" ? "修改自定义菜品" : "Edit custom dish") : text.addFood}</strong><button type="button" onClick={() => setFormOpen(false)} aria-label={lang === "zh" ? "关闭" : "Close"}><Cross2Icon width={17} height={17} /></button></div>
@@ -241,6 +247,8 @@ export function MyDataScreen({ lang }: { lang: Lang }) {
           </article>)}
           {!items.length && !formOpen ? <div className="empty-foods custom-empty"><PersonIcon width={22} height={22} /><span>{lang === "zh" ? "还没有自定义菜品，点击上方按钮添加。" : "No custom dishes yet. Use the button above to add one."}</span></div> : null}
         </div>
+
+        <HealthConnectCard lang={lang} />
 
         <section className="backup-card" aria-labelledby="backup-title">
           <div className="backup-heading">

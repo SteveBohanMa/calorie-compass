@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Text of HealthPrivacyActivity (Health Connect permission rationale). Chinese: values-zh/cc_health.xml. -->
+<resources>
+    <string name="cc_health_privacy_title">How Calorie Compass uses Health Connect</string>
+    <string name="cc_health_privacy_body">Calorie Compass uses Health Connect only for the features you turn on:\n\n• Heart rate and workouts: for strength exercises the workout estimator fills in your current heart rate, or the average heart rate of a workout your watch or band has just recorded, so you do not have to type it.\n\n• Weight: when your scale or another app has a newer weight, the app offers to update your body data.\n\n• Resting heart rate: shown in My Data. It is not used in any calculation.\n\n• Writing workouts (off unless you turn it on): exercises you tick as done are written as a workout with its active calories, one record per exercise. Deleting an exercise or unticking it removes its record again.\n\nEverything stays on this phone. Calorie Compass has no account and sends nothing to a server. You can change or revoke these permissions at any time in Health Connect.</string>
+</resources>

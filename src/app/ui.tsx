@@ -9,6 +9,7 @@ import {
 } from "@radix-ui/react-icons";
 import type { Lang } from "../catalog";
 import type { FlowControls } from "../mobile";
+import { NativeBackFlow } from "../native/NativeBack";
 import { COPY } from "./copy";
 
 export type IconType = ComponentType<{ width?: number; height?: number }>;
@@ -46,6 +47,7 @@ export function DesktopInput(props: ComponentProps<"input">) {
 export function AppHeader({ title, lang, flow }: { title: string; lang: Lang; flow: FlowControls }) {
   return (
     <div className="app-header">
+      <NativeBackFlow flow={flow} />
       <button className="icon-button back-button" onClick={flow.pop} aria-label={COPY[lang].back}>
         <ArrowLeftIcon width={20} height={20} />
       </button>

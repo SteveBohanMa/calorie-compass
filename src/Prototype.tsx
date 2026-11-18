@@ -18,7 +18,13 @@ import { MealEditorScreen, PlanScreen, WorkoutEditorScreen } from "./PlanScreens
 import { UserPrefsProvider } from "./features/UserPrefsContext";
 import "./features/features.css";
 import { ProfileProvider } from "./workout/ProfileContext";
+import { HealthProvider } from "./health/HealthContext";
 import { WorkoutScreen } from "./workout/WorkoutScreen";
+import { setupNativePlatform } from "./native/android";
+import { NativeBackFlow } from "./native/NativeBack";
+
+// Android app only (back button, file export); does nothing on Windows or in a browser.
+setupNativePlatform();
 
 export default function Prototype() {
   const [lang, setLang] = useState<Lang>(() =>
@@ -31,7 +37,7 @@ export default function Prototype() {
   };
 
   const initial = useMemo(() => makeHomeScreen(lang, updateLanguage), [lang]);
-  return <ProfileProvider><UserPrefsProvider><PlannerProvider><FlowStack key={lang} initial={initial} frameless /></PlannerProvider></UserPrefsProvider></ProfileProvider>;
+  return <ProfileProvider><UserPrefsProvider><PlannerProvider><HealthProvider lang={lang}><FlowStack key={lang} initial={initial} frameless /></HealthProvider></PlannerProvider></UserPrefsProvider></ProfileProvider>;
 }
 
 function makeHomeScreen(lang: Lang, setLang: (lang: Lang) => void): FlowScreen {
@@ -39,14 +45,17 @@ function makeHomeScreen(lang: Lang, setLang: (lang: Lang) => void): FlowScreen {
     id: "home",
     footerHeight: 86,
     footer: (flow) => (
-      <MainNav
-        lang={lang}
-        active="home"
-        onHome={() => undefined}
-        onLookup={() => flow.push(makeLookupScreen(lang))}
-        onWorkout={() => flow.push(makeWorkoutScreen(lang))}
-        onPlan={() => flow.push(makePlanScreen(lang))}
-      />
+      <>
+        <NativeBackFlow flow={flow} />
+        <MainNav
+          lang={lang}
+          active="home"
+          onHome={() => undefined}
+          onLookup={() => flow.push(makeLookupScreen(lang))}
+          onWorkout={() => flow.push(makeWorkoutScreen(lang))}
+          onPlan={() => flow.push(makePlanScreen(lang))}
+        />
+      </>
     ),
     render: (flow) => (
       <HomeScreen

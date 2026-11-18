@@ -24,7 +24,8 @@ import {
   type WorkoutEntry,
 } from "./planner";
 import { MobileScroll } from "./mobile";
-import { draftFor, draftProblems, draftToInput, entryFromDraft, entryToDraft, type DraftField, type WorkoutDraft } from "./workout/draft";
+import { draftFor, draftProblems, draftToInput, entryFromDraft, entryToDraft, withCompletion, withHeartRateSource, type DraftField, type WorkoutDraft } from "./workout/draft";
+import { EntryHealthNote } from "./health/HealthViews";
 import { EXERCISES, GROUPS, findExercise, type Exercise } from "./workout/exercises";
 import { WORKOUT_MODEL_VERSION, estimateWorkout, type BodyProfile } from "./workout/model";
 import { PROFILE_LIMITS } from "./workout/profile";
@@ -100,8 +101,9 @@ export function PlanScreen({
         width: Math.ceil(rect.width),
         height: Math.ceil(rect.height),
       }, `燃卡快查-周报-${weekStart}.png`);
+      const where = result.filePath ? (lang === "zh" ? `：${result.filePath}` : `: ${result.filePath}`) : "";
       setExportState(result.saved
-        ? (lang === "zh" ? "图片已保存" : "Image saved")
+        ? (lang === "zh" ? `图片已保存${where}` : `Image saved${where}`)
         : (result.canceled ? "" : (lang === "zh" ? "导出失败" : "Export failed")));
     }, 80);
   };
@@ -259,7 +261,7 @@ export function WorkoutEditorScreen({ lang, weekStart, date }: { lang: Lang; wee
       <ProfileCard lang={lang} />
     </> : null}
     <div className="editor-list">
-      {body ? day.workouts.map((item) => <WorkoutEntryCard key={item.id} lang={lang} entry={item} body={body} onChange={replaceWorkout} onRemove={removeWorkout} />) : null}
+      {body ? day.workouts.map((item) => <WorkoutEntryCard key={item.id} lang={lang} date={date} entry={item} body={body} onChange={replaceWorkout} onRemove={removeWorkout} />) : null}
       {body && !day.workouts.length ? <div className="editor-empty">{lang === "zh" ? "还没有训练动作，点击下方按钮开始添加。" : "No workouts yet. Add the first one below."}</div> : null}
     </div>
     {body ? <button className="primary-action" onClick={addWorkout}><PlusIcon />{lang === "zh" ? "添加训练动作" : "Add exercise"}</button> : null}
@@ -271,7 +273,7 @@ function validBodyWeight(text: string) {
   return text.trim() !== "" && Number.isFinite(value) && value >= PROFILE_LIMITS.weightKg.min && value <= PROFILE_LIMITS.weightKg.max ? value : null;
 }
 
-function WorkoutEntryCard({ lang, entry, body, onChange, onRemove }: { lang: Lang; entry: WorkoutEntry; body: BodyProfile; onChange: (entry: WorkoutEntry) => void; onRemove: (id: string) => void }) {
+function WorkoutEntryCard({ lang, date, entry, body, onChange, onRemove }: { lang: Lang; date: string; entry: WorkoutEntry; body: BodyProfile; onChange: (entry: WorkoutEntry) => void; onRemove: (id: string) => void }) {
   const zh = lang === "zh";
   // The exercise is local state, so changing it is not undone while another field is still invalid.
   const [exerciseId, setExerciseId] = useState(entry.exerciseId);
@@ -286,7 +288,7 @@ function WorkoutEntryCard({ lang, entry, body, onChange, onRemove }: { lang: Lan
     if (!nextExercise || weight === null || draftProblems(nextExercise, nextDraft).length) return;
     const estimate = estimateWorkout(nextExercise, draftToInput(nextDraft), { ...body, weightKg: weight });
     // Fields written by a newer app version are kept; every field this version knows is rewritten.
-    onChange({ ...entry, ...entryFromDraft(entry.id, nextExercise, nextDraft, weight, estimate, entry.completed) });
+    onChange(withHeartRateSource(entry, { ...entry, ...entryFromDraft(entry.id, nextExercise, nextDraft, weight, estimate, entry.completed) }));
   };
   const changeField = (field: DraftField, value: string) => {
     const next = { ...draft, [field]: value };
@@ -307,7 +309,7 @@ function WorkoutEntryCard({ lang, entry, body, onChange, onRemove }: { lang: Lan
   };
 
   const extra = { low: entry.burnLow, mid: entry.burnMid, high: entry.burnHigh };
-  const top = <div className="editor-card-top"><label className="check-control"><input type="checkbox" checked={entry.completed} onChange={(event) => onChange({ ...entry, completed: event.target.checked })} /><span><CheckIcon /></span>{zh ? "已完成" : "Done"}</label><button className="delete-button" onClick={() => onRemove(entry.id)} aria-label={zh ? "删除训练动作" : "Delete exercise"}><TrashIcon /></button></div>;
+  const top = <div className="editor-card-top"><label className="check-control"><input type="checkbox" checked={entry.completed} onChange={(event) => onChange(withCompletion(entry, event.target.checked))} /><span><CheckIcon /></span>{zh ? "已完成" : "Done"}</label><button className="delete-button" onClick={() => onRemove(entry.id)} aria-label={zh ? "删除训练动作" : "Delete exercise"}><TrashIcon /></button></div>;
 
   if (fromNewerVersion) {
     // Made by a newer app with a newer model: show it as stored, never recompute it with this older model.
@@ -340,5 +342,6 @@ function WorkoutEntryCard({ lang, entry, body, onChange, onRemove }: { lang: Lan
       {total ? <small>{zh ? `含静息代谢 ${formatRange(total, lang)} kcal · 约 ${entry.durationMinutes} 分钟` : `Incl. resting metabolism ${formatRange(total, lang)} kcal · about ${entry.durationMinutes} min`}</small> : null}
       {stale && exercise ? <small>{zh ? "显示的是上次有效输入的结果；把标红的数值改好后会重新计算。" : "These are the numbers from the last valid inputs; fix the highlighted values to recalculate."}</small> : null}
     </div>
+    <EntryHealthNote lang={lang} entry={entry} date={date} />
   </section>;
 }

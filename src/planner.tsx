@@ -61,6 +61,15 @@ export type WorkoutEntry = {
   headline: "total" | "training";
   modelVersion: number;
   completed: boolean;
+  /** v2.10: when it was recorded on the workout screen (ISO time). Write-back uses it as the end time. */
+  recordedAt?: string;
+  /** v2.10: when it was ticked as done (ISO time); write-back falls back to it. Removed when unticked. */
+  completedAt?: string;
+  /** v2.10: where avgHr came from: read from Health Connect, or typed by the user. Absent without a heart rate. */
+  hrSource?: "healthConnect" | "manual";
+  /** v2.10, Health Connect only: the time the heart rate covers (a single reading has hrFrom = hrTo). ISO times. */
+  hrFrom?: string;
+  hrTo?: string;
 };
 
 export type DayPlan = {
@@ -81,6 +90,8 @@ export type PlannerState = {
 };
 
 type PlannerContextValue = {
+  /** Every stored week by its Monday key (used by the Health Connect write-back, src/health/). */
+  weeks: Record<string, WeekPlan>;
   getWeek: (weekStart: string) => WeekPlan;
   updateDay: (weekStart: string, date: string, updater: (day: DayPlan) => DayPlan) => void;
   /** Re-reads the plan from storage, e.g. after a backup was imported. */
@@ -161,7 +172,7 @@ export function PlannerProvider({ children }: PropsWithChildren) {
 
   const reloadFromStorage = useCallback(() => setState(loadState()), []);
 
-  const value = useMemo(() => ({ getWeek, updateDay, reloadFromStorage }), [getWeek, updateDay, reloadFromStorage]);
+  const value = useMemo(() => ({ weeks: state.weeks, getWeek, updateDay, reloadFromStorage }), [state.weeks, getWeek, updateDay, reloadFromStorage]);
   return <PlannerContext.Provider value={value}>{children}</PlannerContext.Provider>;
 }
 

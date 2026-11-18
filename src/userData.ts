@@ -2,7 +2,7 @@ import type { DayPlan, MealEntry, PlannerState, WeekPlan, WorkoutEntry } from ".
 import { WORKOUT_MODEL_VERSION } from "./workout/model";
 import { emptyProfile, isProfileComplete, sanitizeProfile, type StoredProfile } from "./workout/profile";
 
-export const APP_VERSION = "2.8.0";
+export const APP_VERSION = "2.10.0";
 
 // Browser-storage keys for user data. The names are part of the saved-data format:
 // renaming a key hides everything users stored under it, so keep the historical
@@ -15,6 +15,9 @@ export const STORAGE_KEYS = {
   profile: "calorie-compass-v2.8-profile",
   favorites: "calorie-compass-v2.8-favorites",
   portions: "calorie-compass-v2.8-portions",
+  // v2.10, Android only and kept out of backups: they describe this phone's Health Connect, not the user's data.
+  healthSettings: "calorie-compass-v2.10-health",
+  healthSync: "calorie-compass-v2.10-health-sync",
 } as const;
 
 /** How the comparison is drawn and the portions the user last chose (v2.8). */
@@ -240,6 +243,10 @@ export function sanitizeWorkoutEntry(value: unknown): WorkoutEntry | "legacy" | 
   };
   if (Object.values(required).some((number) => number === null)) return null;
   const optional = (key: string) => cleanNumber(value[key]);
+  const avgHr = optional("avgHr");
+  // v2.10 fields: kept only when valid (a time that parses; heart-rate provenance only with a heart rate).
+  const time = (key: string, keep = true) => (keep && isString(value[key]) && Number.isFinite(Date.parse(value[key] as string)) ? { [key]: value[key] as string } : {});
+  const hrSource = avgHr !== null && (value.hrSource === "healthConnect" || value.hrSource === "manual") ? value.hrSource : null;
   return withUnknownFields<WorkoutEntry>(value, {
     ...shared,
     ...(required as Record<keyof typeof required, number>),
@@ -252,11 +259,16 @@ export function sanitizeWorkoutEntry(value: unknown): WorkoutEntry | "legacy" | 
     watts: optional("watts"),
     level: isString(value.level) ? value.level : null,
     rpe: optional("rpe"),
-    avgHr: optional("avgHr"),
+    avgHr,
     totalLow: optional("totalLow"),
     totalHigh: optional("totalHigh"),
     headline: isString(value.headline) && WORKOUT_HEADLINES.has(value.headline) ? (value.headline as WorkoutEntry["headline"]) : "training",
-  });
+    ...time("recordedAt"),
+    ...time("completedAt", value.completed === true),
+    ...(hrSource ? { hrSource } : {}),
+    ...time("hrFrom", hrSource === "healthConnect"),
+    ...time("hrTo", hrSource === "healthConnect"),
+  }, ["recordedAt", "completedAt", "hrSource", "hrFrom", "hrTo"]);
 }
 
 function addDays(dateKey: string, days: number) {

@@ -101,6 +101,9 @@ test("rebuilt foods are visible; removed and pending foods are not", async ({ pa
     await expect(current(page).locator(".empty-foods"), query).toBeVisible();
     await page.locator(".back-button").click();
     await expect(current(page).locator(".method-grid")).toBeVisible();
+    // The screen that slides out keeps its test id until its animation ends; on a busy machine the
+    // next search could otherwise see two "no results" lists.
+    await expect(current(page)).toHaveCount(1);
   }
 });
 

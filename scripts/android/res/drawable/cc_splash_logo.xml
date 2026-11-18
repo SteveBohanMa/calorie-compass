@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The brand mark shown while the app starts (see cc_launch_background.xml). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path android:pathData="M24,0H84A24,24 0,0 1,108,24V84A24,24 0,0 1,84,108H24A24,24 0,0 1,0,84V24A24,24 0,0 1,24,0Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="0"
+                android:startY="0"
+                android:endX="108"
+                android:endY="108">
+                <item android:offset="0" android:color="#FF2E9C76" />
+                <item android:offset="1" android:color="#FF123C31" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <group
+        android:scaleX="2.9"
+        android:scaleY="2.9"
+        android:translateX="19.2"
+        android:translateY="19.2">
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M14.2,2L5,13.6H11L9.8,22L19,10.2H13Z"
+            android:strokeColor="#FFFFFFFF"
+            android:strokeLineJoin="round"
+            android:strokeWidth="1.1" />
+    </group>
+</vector>

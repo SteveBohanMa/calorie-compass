@@ -1,4 +1,4 @@
-# Calorie Compass v2.8 Agent Guide
+# Calorie Compass v2.10 Agent Guide
 
 ## Product decisions
 
@@ -56,8 +56,30 @@
 - The form rejects values outside `INPUT_LIMITS` (`draftProblems`) instead of letting the model clamp them, and keeps the last valid result visible (dimmed) while a value is being fixed.
 - Raise `WORKOUT_MODEL_VERSION` when a change alters stored numbers in a way older apps must not recompute.
 
+## Android app (v2.9)
+
+- Capacitor 8 wraps the same web build (`dist/client`) into an Android app. `capacitor.config.json` holds the app id `io.github.stevebohanma.caloriecompass`, the name and `server.androidScheme: "https"` / `hostname: "localhost"`. Never change the app id or the scheme/hostname: Android identifies the installed app by its id, and localStorage is keyed by the `https://localhost` origin, so either change loses the phone's data.
+- Build on Windows with `build-android.cmd` (`scripts/android/build-android.mjs`, log in `build-android.log`). Tools live in `%LOCALAPPDATA%\CalorieCompassAndroid`; Gradle runs on a copy in an ASCII-only folder there because Android's build tools fail in paths with Chinese characters. Output: `release-vX.Y-android/CalorieCompass-vX.Y.Z.apk`.
+- `android/` is generated once by `npx cap add android`; `scripts/android/customize-android.mjs` (run by every build, idempotent) writes the version (`versionCode = major*10000 + minor*100 + patch`), release signing, icons, theme, `MainActivity`, the file plugin and the Health Connect plugin (v2.10) from `scripts/android/native/` and `scripts/android/res/`. Edit those templates, not the copies in `android/`.
+- Signing: the release key is created once in `../android-signing/` (outside the repository). Every update must be signed with it or Android refuses to install over the old app (uninstalling deletes the phone's data). Never commit it, never regenerate it.
+- `src/native/bridge.ts` (pure, tested in `tests/android.spec.ts`) gives the Android app the same `window.calorieCompass.exportReport/exportBackup` contract as the Windows preload: backups go to `Download/燃卡快查`, weekly report images (a PixelCopy of the on-screen rectangle) to `Pictures/燃卡快查`. `src/native/android.ts` wires it to Capacitor and does nothing on Windows or in a browser.
+- The Android back button/gesture closes registered overlays first (`useNativeBackOverlay`: exercise picker, dish form, import question), then pops the screen stack (`NativeBackFlow` in every header and the home footer), then moves the app to the background.
+- `html[data-native-platform="android"]` (set by `src/native/android.ts`) scopes phone-only CSS in `src/prototype.css`. On a phone everything is tapped: Playwright phone tests must use `tap()`, because with touch emulation Chromium does not turn mouse clicks into clicks on these screens.
+
+## Health Connect (v2.10, Android 14+)
+
+- `scripts/android/native/CalorieCompassHealthPlugin.java` and `HealthConnectAccess.java` use the Health Connect API built into Android 14 (`android.health.connect`, API 34). No third-party plugin and no Jetpack library: minSdk stays 24, and on Android 7–13 the plugin reports `android-version` and the app keeps manual entry. Keep `HealthConnectAccess` free of anything that older Android versions would load (only `CalorieCompassHealthPlugin` touches it, after the SDK check).
+- `HealthPrivacyActivity.java` (text in `scripts/android/res/values*/cc_health.xml`) is the privacy page Health Connect requires: without the activity alias for `VIEW_PERMISSION_USAGE` / `HEALTH_PERMISSIONS` the system grants no health permission. `customize-android.mjs` writes that activity, the alias and the six health permissions between `calorie-compass:health` markers in the manifest.
+- Pure decisions are in `src/health/core.ts`, the checked plugin wrapper in `src/health/api.ts`, state and write-back in `src/health/HealthContext.tsx`, the screens in `src/health/HealthViews.tsx`; `tests/health.spec.ts` covers them. Tests install a fake plugin as `window.__calorieCompassHealthPlugin` before the app starts; nothing sets it in the apps.
+- Owner's rules:
+  - Heart rate is read automatically only for strength exercises and resistance sessions (circuit, strength session), never for cardio: the project is about the energy of anaerobic training. A workout another app recorded that is ongoing or ended at most 2 h ago gives its average heart rate; otherwise the newest sample of the last 5 minutes (older means "no data"). The source is shown, the value stays editable, and a typed value is stored as `hrSource: "manual"`. Too few samples are not judged in this version.
+  - Permissions are asked per feature when it is first used (heart rate from the estimator or My Data; weight, resting heart rate and write-back by their switches in My Data). Refusing keeps manual entry.
+  - Weight only offers an update of the body data, never overwrites it. Resting heart rate is shown in My Data only and not used in calculations.
+  - Write-back is off by default. Each exercise ticked as done becomes one `ExerciseSessionRecord` plus one `ActiveCaloriesBurnedRecord` (kcal = the entry's midpoint extra energy), with client record ids `<entry id>#session` / `#active`; nothing is written when another app has a workout overlapping that time. Unticking or deleting the exercise deletes its records. The end time is `recordedAt` (added from the estimator) or else `completedAt` (ticked) and must fall on the entry's day. Only workouts ending after the day write-back was turned on are written for the first time.
+- Workout entries gained optional `recordedAt`, `completedAt`, `hrSource`, `hrFrom`, `hrTo` (sanitized in `src/userData.ts`; entries without them read as before, so no `WORKOUT_MODEL_VERSION` change). `calorie-compass-v2.10-health` (settings) and `calorie-compass-v2.10-health-sync` (what was written) describe this phone and are not part of backups.
+
 ## Editing and verification
 
 - `desktop/main.cjs` owns the resizable 460 × 860 default Windows window, the `app://` protocol and the `--verify-output` self-check.
 - `npm run build` prunes food images the app does not reference (`scripts/prune-unused-assets.mjs`); source images in `public/` are untouched.
-- Before handoff run `npm test` (runtime lock, data, Sites, Playwright web tests) and `npm run test:desktop` (Electron: restart persistence, protocol safety, startup errors).
+- Before handoff run `npm test` (runtime lock, data, Sites, Android build helpers, Playwright web tests including the phone-size checks) and `npm run test:desktop` (Electron: restart persistence, protocol safety, startup errors). For Android changes also run `build-android.cmd` and check the APK on a phone.

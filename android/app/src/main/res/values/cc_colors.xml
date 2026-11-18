@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Calorie Compass colors: mint-50 and mint-900 of src/prototype.css. Copied by scripts/android/customize-android.mjs. -->
+<resources>
+    <color name="cc_mint_50">#FFF5FCF8</color>
+    <color name="cc_mint_900">#FF184D3E</color>
+</resources>

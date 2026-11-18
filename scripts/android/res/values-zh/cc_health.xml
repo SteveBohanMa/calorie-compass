@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- HealthPrivacyActivity 的中文文字（Health Connect 权限说明）。英文在 values/cc_health.xml。 -->
+<resources>
+    <string name="cc_health_privacy_title">燃卡快查如何使用 Health Connect</string>
+    <string name="cc_health_privacy_body">燃卡快查只在你开启的功能里使用 Health Connect：\n\n• 心率和运动记录：在「训练估算」里给力量动作自动填入你当前的心率；如果手表或手环刚记录了一次运动，就用那次运动的平均心率，不用手动输入。\n\n• 体重：体重秤或其他 App 记录了更新的体重时，提示你更新身体数据。\n\n• 静息心率：只在「我的数据」里显示，不参与任何计算。\n\n• 写回训练（默认关闭）：把你勾选为「已完成」的训练写成一条运动记录和它的活动消耗，每个动作一条；删除或取消勾选会同时删掉这条记录。\n\n所有数据只在这台手机上处理。燃卡快查没有账号，也不会把数据发送到任何服务器。你可以随时在 Health Connect 里修改或撤销这些权限。</string>
+</resources>
